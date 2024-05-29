@@ -103,7 +103,7 @@ const Daybox = (props) => {
       return (
         <div>
           <h3>General Aerobic</h3>
-          <div className="distance">Distance: {distance} km</div>
+          <div className="distance"><p>Distance: <b>{distance} km</b></p></div>
           <div className="description">{description}</div>
         </div>
       );
