@@ -1,31 +1,28 @@
-const express = require('express');
-const mongoose = require('mongoose');
+// server.js
+const express = require("express");
+const sequelize = require('./database');
+const cors = require("cors");
+const planRoutes = require("./routes/planRoutes");
 
+require('./models/associations');
 const app = express();
 const port = 3000;
-const cors = require('cors');
 
 app.use(express.json());
 app.use(cors());
 
-const workoutSchema = new mongoose.Schema({
-  name: String,
-  distance: Number,
+app.use("/plan", planRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Hello Training Planner API!");
 });
 
-const Workout = mongoose.model('Workout', workoutSchema);
 
 
-app.post('/workouts', (req, res) => {
-  const workout = new Workout(req.body);
-  console.log(req.body)
-  res.status(201).send(workout);
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+sequelize.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}).catch((error) => {
+  console.error('Error connecting to the database', error);
 });
