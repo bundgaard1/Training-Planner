@@ -4,8 +4,8 @@ const Plan = require("../models/Plan");
 
 const router = express.Router();
 
-router.get("/getPlan", async (req, res) => {
-  planId = req.query.planId;
+router.get("/getPlan/:planId", async (req, res) => {
+  const planId = req.params.planId;
 
   if (!planId) {
     return res.status(400).send({ error: "planID is required is query" });
@@ -46,25 +46,11 @@ router.post("/createPlan", async (req, res) => {
         day: i * 7 + j,
         planId: plan.id,
       });
-      await workout.save();
+      workout.save();
     }
-
   }
 
   res.send(plan);
-});
-
-// Get all workouts associated with a plan
-router.get("/getWorkoutsByPlan", async (req, res) => {
-  planId = req.query.planId;
-
-  if (!planId) {
-    return res.status(400).send({ error: "planId is required in query" });
-  }
-
-  const workouts = await Workout.findAll({ where: { planId: planId } });
-
-  res.send(workouts);
 });
 
 module.exports = router;
