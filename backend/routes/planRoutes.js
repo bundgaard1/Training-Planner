@@ -1,6 +1,7 @@
 const express = require("express");
-const Workout = require("../models/Workout");
+
 const Plan = require("../models/Plan");
+const {createWorkoutsForPlan}  = require("../services/planService")
 
 const router = express.Router();
 
@@ -37,18 +38,7 @@ router.post("/createPlan", async (req, res) => {
 
   await plan.save();
 
-  for (let i = 0; i < weeks; i++) {
-    for (let j = 1; j <= 7; j++) {
-      const workout = new Workout({
-        workoutType: "Rest",
-        distance: 0,
-        description: "",
-        day: i * 7 + j,
-        planId: plan.id,
-      });
-      workout.save();
-    }
-  }
+  await createWorkoutsForPlan(plan, weeks);
 
   res.send(plan);
 });

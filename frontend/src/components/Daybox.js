@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./DayBox.css";
 import { usePlan } from "./PlanContext";
 import { updateWorkout } from "../api/workoutAPI";
-
-const DayWorkoutTypes = {
-  Rest: "Rest",
-  GenAerobic: "GenAerobic",
-  Workout: "Workout",
-};
+import Modal from "./WorkoutModal";
 
 const Daybox = (props) => {
   const [workout, setWorkout] = useState(null);
@@ -22,7 +17,6 @@ const Daybox = (props) => {
     }
   }, [workoutsByDay]);
 
-
   useEffect(() => {
     const updatedWorkout = async () => {
       try {
@@ -32,137 +26,29 @@ const Daybox = (props) => {
         console.error(error);
       }
     };
-    
+
     updatedWorkout();
 
     setWorkoutsByDay({
       ...workoutsByDay,
       [props.day]: workout,
     });
-    
   }, [workout]);
 
-  const Modal = () => {
-    const [tempWorkout, setTempWorkout] = useState(workout);
-
-    const handleChange = (event) => {
-      const { name, value } = event.target;
-      const parsedValue =
-        event.target.name === "distance"
-          ? parseFloat(event.target.value)
-          : event.target.value;
-      setTempWorkout({
-        ...tempWorkout,
-        [name]: parsedValue,
-      });
-    };
-
-    const handleSave = (event) => {
-      setWorkout(tempWorkout);
-    };
-
-    const closeModal = (event) => {
-      event.stopPropagation();
-      setIsModalOpen(false);
-    };
-
+  const WorkoutContent = () => {
     return (
-      <div className="modal">
-        <div className="modalHeader">
-          <h2>Day {props.day}</h2>
-        </div>
-        <div className="workoutType">
-          Workout Type:
-          <select
-            name="workoutType"
-            value={tempWorkout.workoutType}
-            onChange={handleChange}
-          >
-            {Object.entries(DayWorkoutTypes).map(([type, value], index) => {
-              return (
-                <option key={index} value={value}>
-                  {type}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="distanceInput">
-          Distance :
-          <input
-            name="distance"
-            type="number"
-            value={tempWorkout.distance}
-            onChange={handleChange}
-          />
-          km
-        </div>
-
-        <div className="descriptionInput">
-          Description :
-          <textarea
-            name="description"
-            value={tempWorkout.description}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-        <div className="modalFooter">
-          <button
-            onClick={(e) => {
-              handleSave(e);
-              closeModal(e);
-            }}
-          >
-            Save & Close
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  const DayboxContent = () => {
-    const RestContent = () => {
-      return (
-        <div>
-          <h3>Rest</h3>
-          <div className="description">{workout.description}</div>
-        </div>
-      );
-    };
-
-    const GenAerobicContent = () => {
-      return (
-        <div>
-          <h3>General Aerobic</h3>
+      <div>
+        <h3>{workout.workoutType}</h3>
+        {workout.workoutType !== "Rest" && (
           <div className="distance">
             <p>
               Distance: <b>{workout.distance} km</b>
             </p>
           </div>
-          <div className="description">{workout.description}</div>
-        </div>
-      );
-    };
-
-    const WorkoutContent = () => {
-      return (
-        <div>
-          <h3>Workout</h3>
-          <div className="distance">Distance: {workout.distance} km</div>
-          <div className="description">{workout.description}</div>
-        </div>
-      );
-    };
-
-    const ContentMap = {
-      Rest: <RestContent />,
-      GenAerobic: <GenAerobicContent />,
-      Workout: <WorkoutContent />,
-    };
-
-    // return the correct content based on the workout type
-    return ContentMap[workout.workoutType];
+        )}
+        <div className="description">{workout.description}</div>
+      </div>
+    );
   };
 
   const handleBoxClick = (event) => {
@@ -180,21 +66,13 @@ const Daybox = (props) => {
       <div className="dayboxHeaderContainer">
         <p className="dayboxHeader">{props.day}</p>
       </div>
-      <div className="dayboxContent">
-        <DayboxContent />
-      </div>
+      <WorkoutContent />
       {isModalOpen && (
-        <div
-          className="fullScreenModalLayer"
-          onClick={(event) => {
-            event.stopPropagation();
-            setIsModalOpen(false);
-          }}
-        >
-          <div onClick={(event) => event.stopPropagation()}>
-            <Modal />
-          </div>
-        </div>
+        <Modal
+          tempWorkout={workout}
+          setWorkout={setWorkout}
+          setIsModalOpen={setIsModalOpen}
+        />
       )}
     </div>
   );

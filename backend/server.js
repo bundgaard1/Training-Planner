@@ -1,4 +1,4 @@
-// server.js
+
 const express = require("express");
 const sequelize = require('./database');
 const cors = require("cors");
@@ -16,7 +16,7 @@ app.use("/plans", planRoutes);
 app.use("/workouts", workoutRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello Training Planner API!");
+  res.send("Hello, I am Training Planner API!");
 });
 
 
