@@ -28,13 +28,13 @@ router.get("/getPlans", async (req, res) => {
 });
 
 router.post("/createPlan", async (req, res) => {
-  const { weeks, name } = req.body;
+  const { weeks, name, date } = req.body;
 
-  if (!weeks || !name) {
+  if (!weeks || !name || !date) {
     return res.status(400).send({ error: "weeks and name are required" });
   }
 
-  const plan = new Plan({ weeks, name });
+  const plan = new Plan({ weeks, name, date });
 
   await plan.save();
 

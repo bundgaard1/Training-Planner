@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createPlan } from "../api/planAPI";
 
 export function CreatePlanPage() {
-  const [form, setForm] = useState({ weeks: 0, name: "" });
+  const [form, setForm] = useState({ weeks: 0, name: "", date: ""});
   const [text, setText] = useState("")
 
   const onChange = (e) => {
@@ -29,6 +29,10 @@ export function CreatePlanPage() {
       <label>
         Weeks:
         <input onChange={onChange} type="number" name="weeks" />
+      </label> <br />
+      <label>
+        Date:
+        <input onChange={onChange} type="date" name="date" />
       </label> <br />
       <button onClick={onSubmit} type="submit">
         Create Plan

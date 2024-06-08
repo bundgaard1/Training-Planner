@@ -8,6 +8,7 @@ async function createWorkoutsForPlan(plan, weeks) {
         distance: 0,
         description: "",
         day: i * 7 + j,
+        isCompleted: false,
         planId: plan.id,
       });
       await workout.save();

@@ -9,10 +9,12 @@ const Daybox = (props) => {
   const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const day = props.day;
+  const date = new Date(plan.date); 
 
   useEffect(() => {
-    if (workoutsByDay[props.day]) {
-      setWorkout(workoutsByDay[props.day]);
+    if (workoutsByDay[day]) {
+      setWorkout(workoutsByDay[day]);
       setIsLoading(false);
     }
   }, [workoutsByDay]);
@@ -31,7 +33,7 @@ const Daybox = (props) => {
 
     setWorkoutsByDay({
       ...workoutsByDay,
-      [props.day]: workout,
+      [day]: workout,
     });
   }, [workout]);
 
@@ -51,6 +53,17 @@ const Daybox = (props) => {
     );
   };
 
+  const DayboxHeader = () => {
+    return (
+      <div className="dayboxHeaderContainer">
+        <p className="dayboxHeader">{day}</p>
+        {workout && workout.isCompleted && (
+          <div className="completedIcon">&#10003;</div>
+        )}
+      </div>
+    );
+  };
+
   const handleBoxClick = (event) => {
     event.stopPropagation();
     console.log(workout);
@@ -63,9 +76,7 @@ const Daybox = (props) => {
 
   return (
     <div className="daybox" onClick={handleBoxClick}>
-      <div className="dayboxHeaderContainer">
-        <p className="dayboxHeader">{props.day}</p>
-      </div>
+      <DayboxHeader />
       <WorkoutContent />
       {isModalOpen && (
         <Modal

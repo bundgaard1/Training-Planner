@@ -2,17 +2,30 @@ import React, { useState } from "react";
 
 const DayWorkoutTypes = {
   Rest: "Rest",
-  GenAerobic: "GenAerobic",
+  GenAerobic: "GeneralAerobic",
   Workout: "Workout",
+  LongRun: "LongRun",
+  Race: "Race",
 };
 
 const WorkoutModal = (props) => {
   const [tempWorkout, setTempWorkout] = useState(props.tempWorkout);
 
   const handleFormChange = (event) => {
-    const { name, value } = event.target;
-    const parsedValue =
-      event.target.name === "distance" ? parseFloat(value) : value;
+    const { name, value, type } = event.target;
+    let parsedValue;
+
+    switch (type) {
+      case "number":
+        parsedValue = parseFloat(value);
+        break;
+      case "checkbox":
+        parsedValue = event.target.checked;
+        break;
+      default:
+        parsedValue = value;
+    }
+
     setTempWorkout({
       ...tempWorkout,
       [name]: parsedValue,
@@ -75,6 +88,15 @@ const WorkoutModal = (props) => {
             value={tempWorkout.description}
             onChange={handleFormChange}
           ></textarea>
+        </div>
+        <div className="isCompletedInput">
+        Completed : 
+          <input
+            name="isCompleted"
+            type="checkbox"
+            onChange={handleFormChange}
+            checked={tempWorkout.isCompleted}
+          />
         </div>
         <div className="modalFooter">
           <button

@@ -6,8 +6,9 @@ const PlanContext = createContext();
 
 // Create a provider component
 export const PlanProvider = ({ children }) => {
-  const [plan, setPlan] = useState({ weeks: 0, name: "NO PLAN", id: 0 });
+  const [plan, setPlan] = useState({ weeks: 0, name: "NO PLAN", id: 0, date: (new Date(2024, 0, 1)).toISOString()});
   const [workoutsByDay, setWorkoutsByDay] = useState({});
+  console.log(plan.date);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
