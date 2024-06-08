@@ -13,6 +13,16 @@ export function CreatePlanPage() {
   };
 
   const onSubmit = (e) => {
+
+    if (!form.name || !form.weeks || !form.date) {
+      setText("Please fill in all fields");
+      return;
+    }
+    if (form.weeks < 1  || form.weeks > 32) {
+      setText("Weeks must be between 1 and 32");
+      return;
+    }
+
     createPlan(form).then((data) => {
       console.log(data);
       setText("Plan created successfully")
