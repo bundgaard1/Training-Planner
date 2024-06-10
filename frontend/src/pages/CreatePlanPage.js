@@ -41,7 +41,7 @@ export function CreatePlanPage() {
         <input onChange={onChange} type="number" name="weeks" />
       </label> <br />
       <label>
-        Date:
+        Starting Date:
         <input onChange={onChange} type="date" name="date" />
       </label> <br />
       <button onClick={onSubmit} type="submit">

@@ -10,7 +10,6 @@ const Daybox = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const day = props.day;
-  const date = new Date(plan.date); 
 
   useEffect(() => {
     if (workoutsByDay[day]) {

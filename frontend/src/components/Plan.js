@@ -71,7 +71,7 @@ const WeekContainer = (props) => {
       >
         <h2 style={{ margin: "0" }}>Week {week}</h2>
         <p style={{ margin: "0" }}>
-          Date: {weekStartDate.getDate()}/{weekStartDate.getMonth()}{" "}
+          Date: {weekStartDate.getDate()}/{weekStartDate.getMonth()+1}{" "}
         </p>
         <div>Total distance: {weekDistance}</div>
       </div>
