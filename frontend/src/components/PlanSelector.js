@@ -38,7 +38,7 @@ const PlanSelector = (props) => {
           <option value={0} key={0}>
             Select Plan
           </option>
-          {allPlans.map((plan) => (
+          {allPlans && allPlans.length > 0 &&  allPlans.map((plan) => (
             <option value={JSON.stringify(plan)} key={plan.id}>
               {plan.name} ({plan.weeks} weeks)
             </option>

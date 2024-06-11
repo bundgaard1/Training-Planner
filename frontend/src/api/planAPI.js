@@ -41,6 +41,7 @@ export async function getAllPlans() {
   const response = await fetch(`${BASE_URL}/getPlans`, {
     method: "GET",
     headers: {
+      'authorization': `Bearer ${localStorage.getItem('authToken')}`,
       "Content-Type": "application/json",
     },
   });
@@ -49,8 +50,12 @@ export async function getAllPlans() {
     const data = await response.json();
     console.log("Plans received successfully");
     return data;
-  } else {
+  } else if (response.status === 401) {
+    console.error("Unauthorized");
+    return []
+  }
+  
+  else {
     console.error("Error getting plans");
-    throw new Error("Error getting plans");
   }
 }

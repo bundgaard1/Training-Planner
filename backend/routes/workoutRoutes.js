@@ -1,10 +1,11 @@
 const express = require("express");
 const Workout = require("../models/Workout");
+const auth = require("../middleware/auth");
+
 
 const router = express.Router();
 
-// Get all workouts associated with a plan
-router.get("/byPlan/:planId", async (req, res) => {
+router.get("/byPlan/:planId", auth, async (req, res) => {
   const planId = req.params.planId;
 
   if (!planId) {

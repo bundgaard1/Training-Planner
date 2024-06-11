@@ -4,6 +4,7 @@ export async function getWorkoutsByPlan(planId) {
   const response = await fetch(`${BASE_URL}/byPlan/${planId}`, {
     method: "GET",
     headers: {
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       "Content-Type": "application/json",
     },
   });

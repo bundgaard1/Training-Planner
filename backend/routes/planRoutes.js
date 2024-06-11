@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middleware/auth");
 
 const Plan = require("../models/Plan");
 const {createWorkoutsForPlan}  = require("../services/planService")
@@ -21,7 +22,7 @@ router.get("/getPlan/:planId", async (req, res) => {
   res.send(plan);
 });
 
-router.get("/getPlans", async (req, res) => {
+router.get("/getPlans", auth,  async (req, res) => {
   const plans = await Plan.findAll();
 
   res.send(plans);

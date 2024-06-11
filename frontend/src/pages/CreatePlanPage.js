@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createPlan } from "../api/planAPI";
 
 export function CreatePlanPage() {
-  const [form, setForm] = useState({ weeks: 0, name: "", date: ""});
-  const [text, setText] = useState("")
+  const [form, setForm] = useState({ weeks: 0, name: "", date: "" });
+  const [text, setText] = useState("");
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setForm({
@@ -13,20 +15,22 @@ export function CreatePlanPage() {
   };
 
   const onSubmit = (e) => {
-
     if (!form.name || !form.weeks || !form.date) {
       setText("Please fill in all fields");
       return;
     }
-    if (form.weeks < 1  || form.weeks > 32) {
+    if (form.weeks < 1 || form.weeks > 32) {
       setText("Weeks must be between 1 and 32");
       return;
     }
 
     createPlan(form).then((data) => {
       console.log(data);
-      setText("Plan created successfully")
+      setText("Plan created successfully");
+      navigate("/");
     });
+
+    
   };
 
   return (
@@ -35,18 +39,22 @@ export function CreatePlanPage() {
       <label>
         Name:
         <input onChange={onChange} type="text" name="name" />
-      </label> <br />
+      </label>{" "}
+      <br />
       <label>
         Weeks:
         <input onChange={onChange} type="number" name="weeks" />
-      </label> <br />
+      </label>{" "}
+      <br />
       <label>
         Starting Date:
         <input onChange={onChange} type="date" name="date" />
-      </label> <br />
+      </label>{" "}
+      <br />
       <button onClick={onSubmit} type="submit">
         Create Plan
-      </button> <br />
+      </button>{" "}
+      <br />
       <p>{text}</p>
     </div>
   );
