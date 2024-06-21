@@ -1,4 +1,4 @@
-import Workout from "../models/Workout";
+import Workout from "../models/workouts.model";
 
 async function createWorkoutsForPlan(plan: { id: any; }, weeks: number) {
   for (let i = 0; i < weeks; i++) {

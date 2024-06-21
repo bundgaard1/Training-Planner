@@ -1,35 +1,38 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
-import planRoutes from "./routes/planRoutes";
-import workoutRoutes from "./routes/workoutRoutes";
-import userRoutes from "./routes/userRoutes";
-import { createTestUser } from "./services/usersService";
+import dotenv from "dotenv";
 import db from "./database";
+import { createTestUser } from "./services/users.service";
+import router from "./routes";
 
-require("dotenv").config();
+dotenv.config();
 
-require("./models/associations");
+import "./models/associations.model"
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
 
-app.use("/plans", planRoutes);
-app.use("/workouts", workoutRoutes);
-app.use("/users", userRoutes);
+app.use(router);
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Hello, I am Trining Planner API!");
 });
 
-db.sync()
-  .then(() => {
+
+
+const startServer = async () => {
+  try {
+    await db.sync();
     createTestUser();
     app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);
     });
-  })
-  .catch((error: any) => {
+  } catch (error) {
     console.error("Error connecting to the database", error);
-  });
+  }
+};
+
+startServer();

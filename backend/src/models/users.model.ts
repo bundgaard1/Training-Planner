@@ -1,21 +1,16 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database';
+import {User} from '../interfaces/users.interface';
 
-interface UserAttributes {
-  id: number;
-  username: string;
-  password: string;
-}
+interface UserCreationAttributes extends Optional<User, 'id'> {}
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
-
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+class UserModel extends Model<User, UserCreationAttributes> implements User {
   public id!: number;
   public username!: string;
   public password!: string;
 }
 
-User.init({
+UserModel.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -32,7 +27,7 @@ User.init({
   },
 }, {
   sequelize,
-  modelName: 'User', // Ensure this matches the table name in your database, adjusting the case as necessary
+  modelName: 'User',
 });
 
-export default User;
+export default UserModel;

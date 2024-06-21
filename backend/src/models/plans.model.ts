@@ -1,24 +1,18 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database';
+import { Plan } from '../interfaces/plans.interface';
 
-// TypeScript interfaces for compile-time type checking
-interface PlanAttributes {
-  id: number;
-  name: string;
-  weeks: number;
-  date: Date;
-}
+interface PlanCreationAttributes extends Optional<Plan, 'id'> {}
 
-interface PlanCreationAttributes extends Optional<PlanAttributes, 'id'> {}
-
-class Plan extends Model<PlanAttributes, PlanCreationAttributes> implements PlanAttributes {
+class PlanModel extends Model<Plan, PlanCreationAttributes> implements Plan {
   public id!: number;
   public name!: string;
   public weeks!: number;
   public date!: Date;
+  public userId!: number;
 }
 
-Plan.init({
+PlanModel.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -27,6 +21,15 @@ Plan.init({
   name: DataTypes.STRING,
   weeks: DataTypes.INTEGER,
   date: DataTypes.DATE,
+
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'User',
+      key: 'id',
+    },
+    allowNull: false,
+  },
 }, {
   sequelize,
   modelName: 'plans'

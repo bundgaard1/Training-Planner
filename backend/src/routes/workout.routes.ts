@@ -1,6 +1,6 @@
 import express from "express";
-import Workout from "../models/Workout";
-import auth from "../middleware/auth";
+import Workout from "../models/workouts.model";
+import auth from "../middlewares/auth.middleware";
 
 const router = express.Router();
 

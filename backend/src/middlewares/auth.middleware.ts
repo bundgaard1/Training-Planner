@@ -1,11 +1,9 @@
 import { Request, Response} from 'express';
-import { verifyToken } from '../services/jwtService';
+import { verifyToken } from '../services/auth.service';
 import { IncomingHttpHeaders } from 'http';
 
 
-interface CustomRequest extends Request {
-  user?: any;
-}
+
 
 function getTokenFromHeader(header: IncomingHttpHeaders) {
     if (header.authorization && header.authorization.split(' ')[0] === 'Bearer') {
@@ -15,7 +13,7 @@ function getTokenFromHeader(header: IncomingHttpHeaders) {
 
 }
 
-function auth(req: CustomRequest, res: Response, next: any) {
+function auth(req: Request, res: Response, next: any) {
   const token = getTokenFromHeader(req.headers as IncomingHttpHeaders);
 
   if (!token) {
@@ -23,11 +21,10 @@ function auth(req: CustomRequest, res: Response, next: any) {
   }
   
   try {
-    const decoded = verifyToken(token); 
-    req.user = decoded; 
+    verifyToken(token); 
     next(); 
-  } catch (ex) {
-    res.status(400).send({ error: 'Invalid token.' });
+  } catch (ex: any) {
+    res.status(400).send(ex.message);
   }
 }
 

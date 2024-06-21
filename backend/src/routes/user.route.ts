@@ -1,7 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
-import User from "../models/User";
-import {generateToken} from "../services/jwtService";
+import User from "../models/users.model";
+import {generateToken} from "../services/auth.service";
 
 const router = express.Router();
 

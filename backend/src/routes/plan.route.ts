@@ -1,9 +1,9 @@
 import express from "express";
-import auth from "../middleware/auth";
+import auth from "../middlewares/auth.middleware";
 
-import Plan from "../models/Plan";
+import Plan from "../models/plans.model";
 
-import { createWorkoutsForPlan } from "../services/planService";
+import { createWorkoutsForPlan } from "../services/plan.service";
 
 const router = express.Router();
 
@@ -36,7 +36,7 @@ router.post("/createPlan", auth, async (req, res) => {
     return res.status(400).send({ error: "weeks and name are required" });
   }
 
-  const plan = new Plan({ weeks, name, date });
+  const plan = new Plan({ weeks, name, date, userId: req.user.id});
 
   await plan.save();
   if (plan.id) {

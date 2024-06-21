@@ -1,21 +1,11 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database';
-import Plan from './Plan';
+import Plan from './plans.model';
+import { Workout} from "../interfaces/workouts.interface";
 
-// TypeScript interfaces for compile-time type checking
-interface WorkoutAttributes {
-  id: number;
-  workoutType: 'Rest' | 'GeneralAerobic' | 'Workout' | 'LongRun' | 'Race';
-  distance: number; 
-  description: string; 
-  isCompleted: boolean;
-  day: number;
-  planId: number;
-}
+interface WorkoutCreationAttributes extends Optional<Workout, 'id'> {}
 
-interface WorkoutCreationAttributes extends Optional<WorkoutAttributes, 'id'> {}
-
-class Workout extends Model<WorkoutAttributes, WorkoutCreationAttributes> implements WorkoutAttributes {
+class WorkoutModel extends Model<Workout, WorkoutCreationAttributes> implements Workout {
   public id!: number;
   public workoutType!: 'Rest' | 'GeneralAerobic' | 'Workout' | 'LongRun' | 'Race';
   public distance!: number;
@@ -25,7 +15,7 @@ class Workout extends Model<WorkoutAttributes, WorkoutCreationAttributes> implem
   public planId!: number;
 }
 
-Workout.init({
+WorkoutModel.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -57,4 +47,4 @@ Workout.init({
   modelName: 'workouts', // Ensure this matches the table name in your database
 });
 
-export default Workout;
+export default WorkoutModel;

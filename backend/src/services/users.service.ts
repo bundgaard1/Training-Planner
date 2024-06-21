@@ -1,5 +1,5 @@
 
-import User  from "../models/User";
+import User  from "../models/users.model";
 
 export async function createTestUser() {
   const testUser = await User.findOne({ where: { username: "test" } });
