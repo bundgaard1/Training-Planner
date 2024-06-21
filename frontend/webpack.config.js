@@ -2,7 +2,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.tsx', // Update the entry point to your main TypeScript file
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -10,18 +10,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: 'babel-loader'
+        use: 'ts-loader', // Use ts-loader for TypeScript files
       },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      // Keep the existing rules for other file types
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'], // Add .ts and .tsx as resolvable extensions
   },
   devServer: {
     static: {
