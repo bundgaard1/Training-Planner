@@ -1,11 +1,9 @@
-import express from "express";
+// users.controller.ts
 import { Request, Response } from "express";
 import User from "../models/users.model";
-import {generateToken} from "../services/auth.service";
+import { generateToken } from "../services/auth.service";
 
-const router = express.Router();
-
-router.post("/register", async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -16,11 +14,11 @@ router.post("/register", async (req: Request, res: Response) => {
 
   const user = new User({ username, password });
   await user.save();
-  
-  res.status(200).send();
-});
 
-router.post("/login", async (req: Request, res: Response) => {
+  res.status(200).send();
+};
+
+export const loginUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -40,14 +38,5 @@ router.post("/login", async (req: Request, res: Response) => {
     secure: process.env.NODE_ENV === "production",
   });
 
-  res.send({ id: user.id, username: user.username, token});
-});
-
-router.post("/logout", async (_req: Request, res: Response) => {
-  res.clearCookie("authToken");
-  res.send();
-});
-
-
-
-export default router;
+  res.send({ id: user.id, username: user.username, token });
+};

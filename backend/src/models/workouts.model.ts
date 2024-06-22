@@ -1,11 +1,11 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database';
-import Plan from './plans.model';
-import { Workout} from "../interfaces/workouts.interface";
+import PlanModel from './plans.model';
+import { IWorkout} from "../interfaces/workouts.interface";
 
-interface WorkoutCreationAttributes extends Optional<Workout, 'id'> {}
+interface WorkoutCreationAttributes extends Optional<IWorkout, 'id'> {}
 
-class WorkoutModel extends Model<Workout, WorkoutCreationAttributes> implements Workout {
+class WorkoutModel extends Model<IWorkout, WorkoutCreationAttributes> implements IWorkout {
   public id!: number;
   public workoutType!: 'Rest' | 'GeneralAerobic' | 'Workout' | 'LongRun' | 'Race';
   public distance!: number;
@@ -38,13 +38,13 @@ WorkoutModel.init({
   planId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Plan,
+      model: PlanModel,
       key: 'id',
     },
   },
 }, {
   sequelize,
-  modelName: 'workouts', // Ensure this matches the table name in your database
+  modelName: 'workouts', 
 });
 
 export default WorkoutModel;

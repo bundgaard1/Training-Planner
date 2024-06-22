@@ -1,10 +1,11 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database';
-import { Plan } from '../interfaces/plans.interface';
+import { IPlan } from '../interfaces/plans.interface';
+import UserModel from './users.model';
 
-interface PlanCreationAttributes extends Optional<Plan, 'id'> {}
+interface PlanCreationAttributes extends Optional<IPlan, 'id'> {}
 
-class PlanModel extends Model<Plan, PlanCreationAttributes> implements Plan {
+class PlanModel extends Model<IPlan, PlanCreationAttributes> implements IPlan {
   public id!: number;
   public name!: string;
   public weeks!: number;
@@ -25,7 +26,7 @@ PlanModel.init({
   userId: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'User',
+      model: UserModel,
       key: 'id',
     },
     allowNull: false,
@@ -35,4 +36,4 @@ PlanModel.init({
   modelName: 'plans'
 });
 
-export default Plan;
+export default PlanModel;

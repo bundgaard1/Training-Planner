@@ -1,8 +1,8 @@
 
 import { Router } from "express";
-import planRoutes from "./plan.route";
-import workoutRoutes from "./workout.routes";
-import userRoutes from "./user.route";
+import planRoutes from "./plans.route";
+import workoutRoutes from "./workouts.routes";
+import userRoutes from "./users.route";
 
 const router = Router();
 

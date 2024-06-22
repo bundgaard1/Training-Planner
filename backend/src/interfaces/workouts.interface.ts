@@ -1,4 +1,4 @@
-export interface Workout {
+export interface IWorkout {
   id: number;
   workoutType: "Rest" | "GeneralAerobic" | "Workout" | "LongRun" | "Race";
   distance: number;

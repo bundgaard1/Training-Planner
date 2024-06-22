@@ -26,7 +26,7 @@ app.get("/", (req: Request, res: Response) => {
 const startServer = async () => {
   try {
     await db.sync();
-    createTestUser();
+    await createTestUser();
     app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);
     });

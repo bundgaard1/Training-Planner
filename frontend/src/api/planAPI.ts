@@ -60,7 +60,8 @@ export async function getAllPlans(): Promise<PlanData[]> {
     console.log(data);
     return data;
   } else if (response.status === 400) {
-    console.error("Unauthorized");
+    const data = await response.json();
+    console.error(data);
     return []
   }else {
     const errorText = await response.text();

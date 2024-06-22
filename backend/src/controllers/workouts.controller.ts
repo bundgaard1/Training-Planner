@@ -1,10 +1,8 @@
-import express from "express";
+import { Request, Response } from "express";
 import Workout from "../models/workouts.model";
-import auth from "../middlewares/auth.middleware";
+import { RequestWithUser } from "../interfaces/auth.interface";
 
-const router = express.Router();
-
-router.get("/byPlan/:planId", auth, async (req, res) => {
+export const getWorkoutsByPlan = async (req: RequestWithUser, res: Response) => {
   const planId = req.params.planId;
 
   if (!planId) {
@@ -14,9 +12,9 @@ router.get("/byPlan/:planId", auth, async (req, res) => {
   const workouts = await Workout.findAll({ where: { planId: planId } });
 
   res.send(workouts);
-});
+};
 
-router.put("/updateWorkout/:workoutId", auth, async (req, res) => {
+export const updateWorkout = async (req: RequestWithUser, res: Response) => {
   const workoutId = req.params.workoutId;
   const updatedWorkout = req.body;
 
@@ -33,6 +31,4 @@ router.put("/updateWorkout/:workoutId", auth, async (req, res) => {
   await workout.update(updatedWorkout);
 
   res.send(workout);
-});
-
-export default router;
+};
