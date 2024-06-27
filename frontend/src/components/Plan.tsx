@@ -3,8 +3,7 @@ import "./Plan.css";
 import Daybox from "./Daybox";
 import { PlanProvider, usePlan } from "./PlanContext";
 import PlanSelector from "./PlanSelector";
-
-
+import { get } from "http";
 
 const CalendarHeader = () => {
   // header with the days of the week
@@ -52,9 +51,22 @@ interface WeekContainerProps {
 const WeekContainer = (props: WeekContainerProps) => {
   const week = props.week;
   const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
-  // for now we will just use the monday og the current week as the start date
-  const weekStartDate = new Date(plan.date);
+
+  
+  
+  const weekStartDate = new Date(plan.startDate);
   weekStartDate.setDate(weekStartDate.getDate() + 7 * (week - 1));
+
+  const weekMondayDate = new Date(weekStartDate);
+  weekMondayDate.setDate(weekMondayDate.getDate() - weekMondayDate.getDay() + 1);
+  
+  var startWeekDay = weekStartDate.getDay();
+
+  if (startWeekDay === 0) {
+    startWeekDay = 7;
+  }
+  startWeekDay -= 1;
+  const dayoffset = startWeekDay;
 
   const weekDistance = Array.from({ length: 7 }, (_, i) => {
     if (!(workoutsByDay instanceof Map)) {
@@ -72,6 +84,19 @@ const WeekContainer = (props: WeekContainerProps) => {
     );
   }
 
+  const EmptyDay = () => {
+    return (
+      <div
+        className="dayBox"
+        style={{
+          flex: 1,
+          border: "1px solid black",
+          backgroundColor: "lightgray",
+        }}
+      ></div>
+    );
+  };
+
   return (
     <div key={week} className="weekContainer">
       <div
@@ -80,12 +105,18 @@ const WeekContainer = (props: WeekContainerProps) => {
       >
         <h2 style={{ margin: "0" }}>Week {week}</h2>
         <p style={{ margin: "0" }}>
-          Date: {weekStartDate.getDate()}/{weekStartDate.getMonth()+1}{" "}
+          Date: {weekMondayDate.getDate()}/{weekMondayDate.getMonth() + 1}{" "}
         </p>
         <div>Total distance: {weekDistance}</div>
       </div>
-      {Array.from({ length: 7 }, (_, i) => (
-        <Daybox key={i} day={1 + 7 * (week - 1) + i} />
+      {week === 1
+        ? Array.from({ length: startWeekDay }, (_, i) => <EmptyDay key={i} />)
+        : ((startWeekDay = 0), null)}
+      {Array.from({ length: 7 - startWeekDay }, (_, i) => (
+        <Daybox
+          key={i}
+          day={1 + 7 * (week - 1) + i - dayoffset + startWeekDay}
+        />
       ))}
     </div>
   );
@@ -109,13 +140,10 @@ const PlanHeader = () => {
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
         backgroundColor: "lightblue",
       }}
     >
-      {/* <div>{JSON.stringify(plan)}</div> */}
       <h1>{plan.name}</h1>
-      {/*   <div>{JSON.stringify(workoutsByDay)}</div> */}
     </div>
   );
 };

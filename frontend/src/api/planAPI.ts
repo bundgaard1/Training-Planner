@@ -12,7 +12,8 @@ export async function getPlan(planId: number): Promise<PlanData> {
 
   if (response.ok) {
     const data = await response.json();
-    console.log("Plan Recieved  successfully");
+    console.log(data)
+    console.log("Plan Recieved successfully");
     return data;
   } else {
     const errorText = await response.text();
@@ -29,7 +30,7 @@ export async function createPlan(planData: PlanData): Promise<PlanData> {
       "authorization": `Bearer ${localStorage.getItem('authToken')}`,
       "Content-Type": "application/json",
     },
-  });
+  }); 
 
   if (response.ok) {
     const data = await response.json();
@@ -37,7 +38,7 @@ export async function createPlan(planData: PlanData): Promise<PlanData> {
     return data;
   } else if (response.status === 400) {
     console.error("Unauthorized");
-    return {id: -1, name: "", weeks: 0, date: ""}
+    return {id: -1, name: "", weeks: 0, startDate: ""}
   } else {
     const errorText = await response.text();
     console.error("Error creating plan: ", errorText);

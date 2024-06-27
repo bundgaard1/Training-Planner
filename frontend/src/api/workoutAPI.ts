@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:3000/workouts";
 import Workout from "../types/Workout";
 
-export async function getWorkoutsByPlan(planId: number): Promise<Workout[]> {
+export async function getWorkoutsByPlan(planId: number) {
   const response = await fetch(`${BASE_URL}/byPlan/${planId}`, {
     method: "GET",
     headers: {

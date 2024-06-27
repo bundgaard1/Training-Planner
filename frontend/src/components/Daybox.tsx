@@ -3,7 +3,7 @@ import "./DayBox.css";
 import { usePlan } from "./PlanContext";
 import { updateWorkout } from "../api/workoutAPI";
 import Modal from "./WorkoutModal";
-import Workout, {defaultWorkout} from "../types/Workout";
+import Workout, { defaultWorkout } from "../types/Workout";
 
 interface DayboxProps {
   day: number;
@@ -11,7 +11,7 @@ interface DayboxProps {
 
 const Daybox: React.FC<DayboxProps> = (props) => {
   const [workout, setWorkout] = useState<Workout>(defaultWorkout);
-  const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
+  const { workoutsByDay, setWorkoutsByDay } = usePlan();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const day = props.day;
@@ -45,8 +45,9 @@ const Daybox: React.FC<DayboxProps> = (props) => {
   }, [workout]);
 
   const WorkoutContent = () => {
+    const characterLimit = 20;
     return (
-      <div>
+      <div className="dayboxContent">
         <h3>{workout.workoutType}</h3>
         {workout.workoutType !== "Rest" && (
           <div className="distance">
@@ -55,7 +56,11 @@ const Daybox: React.FC<DayboxProps> = (props) => {
             </p>
           </div>
         )}
-        <div className="description">{workout.description}</div>
+        <div className="description">
+          {workout.description.length > characterLimit
+            ? workout.description.substring(0, characterLimit)+"..."
+            : workout.description}
+        </div>  
       </div>
     );
   };
@@ -95,5 +100,7 @@ const Daybox: React.FC<DayboxProps> = (props) => {
     </div>
   );
 };
+
+
 
 export default Daybox;

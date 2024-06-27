@@ -1,5 +1,4 @@
 .daybox {
-  align-items: center;
   height: 120px;
   flex: 1;
   border: black 1px solid;
@@ -76,11 +75,10 @@
 }
 
 .dayboxContent h3 {
-  margin: 0px;
-  padding: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .dayboxContent p {
   margin: 0;
-  text-align: center;
 }

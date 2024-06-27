@@ -4,7 +4,7 @@ import { createPlan } from "../api/planAPI";
 import PlanData  from "../types/PlanData";
 
 export function CreatePlanPage() {
-  const [form, setForm] = useState<PlanData>({ weeks: 0, name: "", date: "" });
+  const [form, setForm] = useState<PlanData>({ weeks: 0, name: "", startDate: "" });
   const [text, setText] = useState("");
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ export function CreatePlanPage() {
   };
 
   const onSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
-    if (!form.name || !form.weeks || !form.date) {
+    if (!form.name || !form.weeks || !form.startDate) {
       setText("Please fill in all fields");
       return;
     }
@@ -49,7 +49,7 @@ export function CreatePlanPage() {
       <br />
       <label>
         Starting Date:
-        <input onChange={onChange} type="date" name="date" />
+        <input onChange={onChange} type="date" name="startDate" />
       </label>{" "}
       <br />
       <button onClick={onSubmit} type="submit">

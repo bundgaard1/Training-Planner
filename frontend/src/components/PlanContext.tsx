@@ -22,7 +22,7 @@ const defaultContextValue: PlanContextType = {
     id: undefined,
     weeks: 0,
     name: "NO PLAN",
-    date: new Date(2024, 0, 1).toISOString(),
+    startDate: new Date(2024, 0, 1).toISOString(),
   },
   setPlan: () => {},
   workoutsByDay: new Map(),
@@ -45,6 +45,7 @@ export const PlanProvider: React.FC<PlanProviderProps> = ({ children }) => {
     const fetchWorkouts = async () => {
       if (plan.id !== undefined) {
         let workouts = await getWorkoutsByPlan(plan.id);
+        console.log("wORKOUTS: ", workouts);
         let workoutsDayMap = new Map<number, Workout>();
         workouts.forEach((element: Workout) => {
           workoutsDayMap.set(element.day, element);
@@ -54,7 +55,7 @@ export const PlanProvider: React.FC<PlanProviderProps> = ({ children }) => {
     };
 
     fetchWorkouts();
-  }, [plan.id]);
+  }, [plan]);
 
   const contextValue = useMemo(() => ({
     plan, setPlan, workoutsByDay, setWorkoutsByDay

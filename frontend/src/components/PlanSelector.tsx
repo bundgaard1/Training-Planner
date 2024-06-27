@@ -19,7 +19,7 @@ const PlanSelector = () => {
 
   const changePlanToTheSelected = async () => {
     if (inputPlanId !== 0) {
-      const selectedPlan: PlanData = await getPlan(inputPlanId);
+      const selectedPlan: PlanData = await getPlan(inputPlanId); 
       setPlan(selectedPlan);
     }
   };
