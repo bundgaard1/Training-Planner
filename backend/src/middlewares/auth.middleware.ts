@@ -3,6 +3,7 @@ import { verifyToken, decodedToken } from "../services/auth.service";
 import { IncomingHttpHeaders } from "http";
 import UserModel from "../models/users.model";
 import { RequestWithUser } from "../interfaces/auth.interface";
+import { IUser } from "../interfaces/users.interface";
 
 function getTokenFromHeader(header: IncomingHttpHeaders): string | null {
   if (header.authorization && header.authorization.split(" ")[0] === "Bearer") {
@@ -33,7 +34,7 @@ async function authMiddleware(
       return;
     }
 
-    req.user = user;
+    req.user = user as IUser;
     next();
   } catch (ex: any) {
     res.status(400).send({ error: ex.message });

@@ -1,11 +1,12 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
+dotenv.config();
+
 import db from "./database";
 import { createTestUser } from "./services/users.service";
 import router from "./routes";
-
-dotenv.config();
 
 import "./models/associations.model"
 

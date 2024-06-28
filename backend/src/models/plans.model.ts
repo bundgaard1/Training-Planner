@@ -9,7 +9,7 @@ class PlanModel extends Model<IPlan, PlanCreationAttributes> implements IPlan {
   public id!: number;
   public name!: string;
   public weeks!: number;
-  public date!: Date;
+  public startDate!: Date;
   public userId!: number;
 }
 
@@ -21,7 +21,7 @@ PlanModel.init({
   },
   name: DataTypes.STRING,
   weeks: DataTypes.INTEGER,
-  date: DataTypes.DATE,
+  startDate: DataTypes.DATE,
 
   userId: {
     type: DataTypes.INTEGER,
