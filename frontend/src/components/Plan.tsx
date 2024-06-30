@@ -52,8 +52,6 @@ const WeekContainer = (props: WeekContainerProps) => {
   const week = props.week;
   const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
 
-  
-  
   const weekStartDate = new Date(plan.startDate);
   weekStartDate.setDate(weekStartDate.getDate() + 7 * (week - 1));
 
@@ -74,7 +72,9 @@ const WeekContainer = (props: WeekContainerProps) => {
     }
     const day = 1 + 7 * (week - 1) + i;
     return workoutsByDay.get(day) ? workoutsByDay.get(day)!.distance : 0;
-  }).reduce((a, b) => a + b, 0);
+  }).reduce((a, b) => a + b);
+
+
 
   if (week === 0) {
     return (

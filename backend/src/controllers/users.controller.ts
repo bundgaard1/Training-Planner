@@ -1,7 +1,7 @@
 // users.controller.ts
 import { Request, Response } from "express";
-import User from "../models/users.model";
 import { generateToken } from "../services/auth.service";
+import { RegisterNewUser, LoginAUser } from "../services/users.service";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -12,10 +12,9 @@ export const registerUser = async (req: Request, res: Response) => {
       .send({ error: "username and password are required" });
   }
 
-  const user = new User({ username, password });
-  await user.save();
+  const user = await RegisterNewUser(username, password);
 
-  res.status(200).send();
+  res.status(200).send({ id: user.id, username: user.username });
 };
 
 export const loginUser = async (req: Request, res: Response) => {
@@ -26,17 +25,17 @@ export const loginUser = async (req: Request, res: Response) => {
       .status(400)
       .send({ error: "username and password are required" });
   }
+  
+  try {
+    const user = await LoginAUser(username, password);
+    const token = generateToken({ id: user.id });
 
-  const user = await User.findOne({ where: { username, password } });
+    res.cookie("authToken", token, {
+      secure: process.env.NODE_ENV === "production",
+    });
 
-  if (!user) {
+    res.send({ id: user.id, username: user.username, token });
+  } catch (error) {
     return res.status(401).send({ error: "Invalid credentials" });
   }
-  const token = generateToken({ id: user.id });
-
-  res.cookie("authToken", token, {
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  res.send({ id: user.id, username: user.username, token });
 };

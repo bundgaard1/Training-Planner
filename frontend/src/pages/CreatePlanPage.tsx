@@ -8,6 +8,11 @@ export function CreatePlanPage() {
   const [text, setText] = useState("");
   const navigate = useNavigate();
 
+  const endDate = new Date(form.startDate)
+  const endDateOffset = endDate.getDay() === 0 ? 7 : endDate.getDay();
+
+  endDate.setDate(endDate.getDate() + form.weeks*7 - endDateOffset)
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement> ) => {
     setForm({
       ...form,
@@ -29,9 +34,7 @@ export function CreatePlanPage() {
       console.log(data);
       setText("Plan created successfully");
       navigate("/");
-    });
-
-    
+    });  
   };
 
   return (
@@ -51,6 +54,11 @@ export function CreatePlanPage() {
         Starting Date:
         <input onChange={onChange} type="date" name="startDate" />
       </label>{" "}
+      <br />
+      <label>
+        Ending Date: {" "}
+        {form.startDate !== "" && form.startDate !== "" ? endDate.getDate() + "/" + (endDate.getMonth()+1) + "/" +endDate.getFullYear() : "-"}
+      </label>
       <br />
       <button onClick={onSubmit} type="submit">
         Create Plan

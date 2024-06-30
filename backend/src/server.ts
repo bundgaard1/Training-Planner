@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import db from "./database";
-import { createTestUser } from "./services/users.service";
+import { RegisterNewUser, createTestUser } from "./services/users.service";
 import router from "./routes";
 
 import "./models/associations.model"
@@ -27,7 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 const startServer = async () => {
   try {
     await db.sync();
-    await createTestUser();
+    await RegisterNewUser("test", "test");
     app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);
     });

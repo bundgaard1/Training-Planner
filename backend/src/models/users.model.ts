@@ -8,6 +8,8 @@ class UserModel extends Model<IUser, UserCreationAttributes> implements IUser {
   public id!: number;
   public username!: string;
   public password!: string;
+  public hash!: string;
+  public salt!: string;
 }
 
 UserModel.init({
@@ -21,7 +23,11 @@ UserModel.init({
     allowNull: false,
     unique: true,
   },
-  password: {
+  hash: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  salt: {
     type: DataTypes.STRING,
     allowNull: false,
   },
