@@ -1,5 +1,4 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
-import "./Plan.css";
 import Daybox from "./Daybox";
 import { PlanProvider, usePlan } from "./PlanContext";
 import PlanSelector from "./PlanSelector";
@@ -16,26 +15,10 @@ const CalendarHeader = () => {
     "Sunday",
   ];
   return (
-    <div
-      className="weekContainer"
-      style={{
-        backgroundColor: "darkgray",
-        display: "flex",
-        flexFlow: "row",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className="weekContainer bg-gray-700 flex flex-row justify-between">
       <div className="weekSummaryBox">Weekly Summary</div>
       {Array.from({ length: 7 }, (_, i) => (
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flex: "1",
-          }}
-        >
+        <div key={i} className="flex justify-center items-center flex-1">
           {daysOfWeek[i]}
         </div>
       ))}
@@ -55,7 +38,6 @@ const WeekContainer = (props: WeekContainerProps) => {
   const thisWeekStartDate = new Date(plan.startDate);
   thisWeekStartDate.setDate(thisWeekStartDate.getDate() + 7 * (week - 1));
 
-  
   useEffect(() => {
     const newWeekDistance = Array.from({ length: 7 }, (_, i) => {
       if (!(workoutsByDay instanceof Map)) {
@@ -77,15 +59,11 @@ const WeekContainer = (props: WeekContainerProps) => {
   }
 
   return (
-    <div key={week} className="weekContainer">
-      <div
-        className="weekSummaryBox"
-        style={{ border: "1px solid black", backgroundColor: "darkgray" }}
-      >
-        <h2 style={{ margin: "0" }}>Week {week}</h2>
-        <p style={{ margin: "0" }}>
-          Date: {thisWeekStartDate.getDate()}/
-          {thisWeekStartDate.getMonth() + 1}{" "}
+    <div key={week} className="weekContainer flex w-max">
+      <div className="weekSummaryBox border-2 bg-gray-500 flex flex-col w-48">
+        <h2 className="m-0">Week {week}</h2>
+        <p className="m-0">
+          Date: {thisWeekStartDate.getDate()}/{thisWeekStartDate.getMonth() + 1}{" "}
         </p>
         <div>Total distance: {weekDistance}</div>
       </div>
@@ -97,9 +75,9 @@ const WeekContainer = (props: WeekContainerProps) => {
 };
 
 const PlanCalender = () => {
-  const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
+  const { plan } = usePlan();
   return (
-    <div className="calendar">
+    <div className="calendar ">
       <CalendarHeader />
       {Array.from({ length: plan.weeks }, (_, i) => (
         <WeekContainer key={i} week={i + 1} />
@@ -109,22 +87,17 @@ const PlanCalender = () => {
 };
 
 const PlanHeader = () => {
-  const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
+  const { plan } = usePlan();
   return (
-    <div
-      style={{
-        display: "flex",
-        backgroundColor: "lightblue",
-      }}
-    >
+    <div className="PlanHeader w-full bg-blue-400">
       <h1>{plan.name}</h1>
     </div>
   );
 };
 
-const Plan = () => {
+const Plan: React.FC = () => {
   return (
-    <div>
+    <div className="PlanOverview flex flex-1 flex-col">
       <PlanProvider>
         <PlanSelector />
         <PlanHeader />

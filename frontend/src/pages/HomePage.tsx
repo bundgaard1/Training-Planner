@@ -3,9 +3,7 @@ import Plan from "../components/Plan";
 
 export function HomePage() {
   return (
-    <div>
-      <Plan />
-    </div>
+    <Plan />
   );
 }
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./DayBox.css";
 import { usePlan } from "./PlanContext";
 import { updateWorkout } from "../api/workoutAPI";
 import Modal from "./WorkoutModal";
@@ -43,7 +42,7 @@ const Daybox: React.FC<DayboxProps> = (props) => {
     const characterLimit = 20;
     return (
       <div className="dayboxContent">
-        <h3>{workout.workoutType}</h3>
+        <h3 className="text-xl font-bold">{workout.workoutType}</h3>
         {workout.workoutType !== "Rest" && (
           <div className="distance">
             <p>
@@ -62,8 +61,8 @@ const Daybox: React.FC<DayboxProps> = (props) => {
 
   const DayboxHeader = () => {
     return (
-      <div className="dayboxHeaderContainer">
-        <p className="dayboxHeader">{day}</p>
+      <div className="dayboxHeader bg-neutral-700 flex justify-between h-10">
+        <p className="hej m-0 p-1">{day}</p>
         {workout && workout.isCompleted && (
           <div className="completedIcon">&#10003;</div>
         )}
@@ -82,7 +81,7 @@ const Daybox: React.FC<DayboxProps> = (props) => {
   }
 
   return (
-    <div className="daybox" onClick={handleBoxClick}>
+    <div className="Daybox h-32 flex-1 border-black bg-slate-400 " onClick={handleBoxClick}>
       <DayboxHeader />
       <WorkoutContent />
       {isModalOpen && (

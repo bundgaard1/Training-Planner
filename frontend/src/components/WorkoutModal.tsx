@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import Workout from "../types/Workout";
 
 const DayWorkoutTypes = {
@@ -19,10 +18,14 @@ interface WorkoutModalProps {
 const WorkoutModal: React.FC<WorkoutModalProps> = (props) => {
   const [tempWorkout, setTempWorkout] = useState(props.tempWorkout);
 
-  const handleFormChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (
+    event: React.ChangeEvent<
+      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value, type } = event.target;
     let parsedValue;
-  
+
     switch (type) {
       case "number":
         parsedValue = parseFloat(value);
@@ -36,7 +39,7 @@ const WorkoutModal: React.FC<WorkoutModalProps> = (props) => {
       default:
         parsedValue = value;
     }
-   
+
     setTempWorkout({
       ...tempWorkout,
       [name]: parsedValue,
@@ -54,14 +57,17 @@ const WorkoutModal: React.FC<WorkoutModalProps> = (props) => {
 
   return (
     <div
-      className="fullScreenModalLayer"
+      className="FullScreenModalLayer fixed w-full h-full z-10 top-0 bottom-0 left-0 right-0 bg-black bg-opacity-45"
       onClick={(event) => {
         event.stopPropagation();
         props.setIsModalOpen(false);
       }}
     >
-      <div className="modal" onClick={(event) => event.stopPropagation()}>
-        <div className="modalHeader">
+      <div
+        className="Modal fixed w-96 h-96 z-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="ModalHeader bg-zinc-500">
           <h2>Day {tempWorkout.day}</h2>
         </div>
         <div className="workoutType">
@@ -101,7 +107,7 @@ const WorkoutModal: React.FC<WorkoutModalProps> = (props) => {
           ></textarea>
         </div>
         <div className="isCompletedInput">
-        Completed : 
+          Completed :
           <input
             name="isCompleted"
             type="checkbox"
