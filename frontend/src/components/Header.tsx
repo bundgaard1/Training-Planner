@@ -1,43 +1,83 @@
-import React, {useState} from "react";
-import "./header.css";
+import React, { useEffect, useState } from "react";
+import "./Header.css";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../api/userAPI";
+import { logoutUser, loginUser, getUser } from "../api/userAPI";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn ]= useState(localStorage.getItem("authToken") !== null);
+  const [user, setUser] = useState({} as any);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("authToken") !== null
+  );
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const user = await getUser();
+      if (user) {
+        setUser(user);
+      }
+    };
+    if (isLoggedIn) {
+      getProfile();
+    }
+  }, []);
 
   const handleLogout = async () => {
     await logoutUser();
     setIsLoggedIn(false);
     window.location.reload();
-  }
+  };
+
+  const MainNavLink = ({ to, title }: { to: string; title: string }) => {
+    return (
+      <Link to={to} className="nav-link">
+        <div className="main-nav-link" style={{ height: "38px" }}>
+          {title}
+        </div>
+      </Link>
+    );
+  };
+
+  const NavGroupHeader = ({ title }: { title: string }) => {
+    return <div className="nav-group-header">{title}</div>;
+  };
+
+  const HorizonalLine = () => {
+    return (
+      <div>
+        <div className="horizontal-line"></div>
+        <div style={{ height: "2px" }}></div>
+      </div>
+    );
+  };
+
+  const Profile = () => {
+    if (isLoggedIn) {
+      return (
+        <div className="profile">
+          Logged in as {user.username}{" "}
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="profile">
+          <Link className="link" to="/login">Login</Link>
+        </div>
+      );
+    }
+  };
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <h1>Training Planner</h1>
-        </li>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/createPlan">Create Plan</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        {isLoggedIn ? (
-          <li>You are logged in</li>
-        ) : (
-          <li>You are not logged in</li>
-        )}
-        {isLoggedIn ? (
-        <li>
-          <button onClick={handleLogout}>Logout</button>
-        </li> ) : null}
-      </ul>
-    </nav>
+    <div className="header">
+      <div className="header-logo">
+        <h1>Traning Planner</h1>
+      </div>
+      <Profile />
+      <MainNavLink to="/home" title="Home" />
+      <NavGroupHeader title="Plans" />
+      <MainNavLink to="/plans" title="Your Plans" />
+      <MainNavLink to="/createPlan" title="Create Plan" />
+    </div>
   );
 };
 

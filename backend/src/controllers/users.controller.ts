@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { generateToken } from "../services/auth.service";
 import { RegisterNewUser, LoginAUser } from "../services/users.service";
+import { RequestWithUser } from "auth.interface";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -38,4 +39,14 @@ export const loginUser = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(401).send({ error: "Invalid credentials" });
   }
+};
+
+export const logoutUser = async (req: Request, res: Response) => {
+  res.clearCookie("authToken");
+  res.send({ message: "Logged out" });
+};
+
+export const getUserProfile = async (req: RequestWithUser, res: Response) => {
+  
+  res.send({ user: req.user });
 };

@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:3000/users";
-import {LoginDetails} from "../types/User"
+import { LoginDetails } from "../types/User";
 
 export async function registerUser(login: LoginDetails) {
   const response = await fetch(`${BASE_URL}/register`, {
@@ -47,9 +47,30 @@ export async function logoutUser() {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    }
+    },
   });
-  
+
   localStorage.removeItem("authToken");
   console.log("User logged out successfully");
 }
+
+export async function getUser() {
+  const response = await fetch(`${BASE_URL}/profile`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log("User fetched successfully");
+    return data.user;
+  } else {
+    console.error("Error fetching user");
+    throw new Error("Error fetching user");
+  }
+}
+
+
+
+
