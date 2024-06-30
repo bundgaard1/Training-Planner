@@ -21,28 +21,23 @@ const Daybox: React.FC<DayboxProps> = (props) => {
       setWorkout(workoutsByDay.get(day)!);
       setIsLoading(false);
     }
-  }, [workoutsByDay, day]);
+  }, [workoutsByDay]);
 
-  useEffect(() => {
-    const updatedWorkout = async () => {
-      if (workout.id === defaultWorkout.id) {
-        return;
-      }
-      try {
-        const updatedWorkout = await updateWorkout(workout.id, workout);
-        console.log(updatedWorkout);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    updatedWorkout();
-
-    setWorkoutsByDay({
-      ...workoutsByDay,
-      [day]: workout,
-    });
-  }, [workout]);
+  async function saveUpdatedWorkout(newWorkout: Workout) {
+    if (newWorkout.id === defaultWorkout.id) {
+      return;
+    }
+    try {
+      const updatedWorkout = await updateWorkout(newWorkout.id, newWorkout);
+      const newWorkoutsByDay = new Map(workoutsByDay);
+      newWorkoutsByDay.set(day, updatedWorkout);
+      setWorkoutsByDay(newWorkoutsByDay);
+    } catch (error) {
+      console.error(error);
+    }
+    
+    
+  };
 
   const WorkoutContent = () => {
     const characterLimit = 20;
@@ -58,9 +53,9 @@ const Daybox: React.FC<DayboxProps> = (props) => {
         )}
         <div className="description">
           {workout.description.length > characterLimit
-            ? workout.description.substring(0, characterLimit)+"..."
+            ? workout.description.substring(0, characterLimit) + "..."
             : workout.description}
-        </div>  
+        </div>
       </div>
     );
   };
@@ -93,14 +88,12 @@ const Daybox: React.FC<DayboxProps> = (props) => {
       {isModalOpen && (
         <Modal
           tempWorkout={workout}
-          setWorkout={setWorkout}
+          saveUpdatedWorkout={saveUpdatedWorkout}
           setIsModalOpen={setIsModalOpen}
         />
       )}
     </div>
   );
 };
-
-
 
 export default Daybox;

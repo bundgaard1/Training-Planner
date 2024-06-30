@@ -12,7 +12,6 @@ export async function getPlan(planId: number): Promise<PlanData> {
 
   if (response.ok) {
     const data = await response.json();
-    console.log(data)
     console.log("Plan Recieved successfully");
     return data;
   } else {
@@ -58,7 +57,7 @@ export async function getAllPlans(): Promise<PlanData[]> {
   if (response.ok) {
     const data = await response.json();
     console.log("Plans received successfully");
-    console.log(data);
+    console.log("All plans: ", data);
     return data;
   } else if (response.status === 400) {
     const data = await response.json();

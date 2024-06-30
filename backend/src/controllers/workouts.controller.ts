@@ -23,12 +23,12 @@ export const updateWorkout = async (req: RequestWithUser, res: Response) => {
   }
 
   const updatedWorkout = req.body;
-
-  const updated = await WorkoutService.updateWorkout(workoutId, updatedWorkout);
-
-  if (!updated) {
-    return res.status(404).send({ error: "Workout not found" });
+  try {
+    const updated = await WorkoutService.updateWorkout(workoutId, updatedWorkout);
+    res.send(updated);
+  } catch (error: any) {
+    return res.status(400).send({ error: error.message });
   }
 
-  res.send(updated);
+
 };

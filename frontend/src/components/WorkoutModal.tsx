@@ -4,7 +4,7 @@ import Workout from "../types/Workout";
 
 const DayWorkoutTypes = {
   Rest: "Rest",
-  GenAerobic: "GeneralAerobic",
+  GenAerobic: "General Aerobic",
   Workout: "Workout",
   LongRun: "LongRun",
   Race: "Race",
@@ -12,7 +12,7 @@ const DayWorkoutTypes = {
 
 interface WorkoutModalProps {
   tempWorkout: Workout;
-  setWorkout: (workout: Workout) => void;
+  saveUpdatedWorkout: (workout: Workout) => void;
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
@@ -26,6 +26,9 @@ const WorkoutModal: React.FC<WorkoutModalProps> = (props) => {
     switch (type) {
       case "number":
         parsedValue = parseFloat(value);
+        if (isNaN(parsedValue)) {
+          parsedValue = ""; // or a default numeric value, e.g., 0
+        }
         break;
       case "checkbox":
         parsedValue = (event.target as HTMLInputElement).checked;
@@ -41,7 +44,7 @@ const WorkoutModal: React.FC<WorkoutModalProps> = (props) => {
   };
 
   const handleSave = () => {
-    props.setWorkout(tempWorkout);
+    props.saveUpdatedWorkout(tempWorkout);
   };
 
   const closeModal = (event: React.MouseEvent) => {

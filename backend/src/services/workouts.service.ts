@@ -1,5 +1,6 @@
 import WorkoutModel from "../models/workouts.model";
 import { IWorkout } from "../interfaces/workouts.interface";
+import { error } from "console";
 
 export async function getAllWorkoutsByPlan(planId: any) {
     const workouts = await WorkoutModel.findAll({ where: { planId } })
@@ -13,15 +14,19 @@ export async function getWorkoutById(workoutId: any) {
 }
 
 export async function updateWorkout(workoutId: any, updatedWorkout: IWorkout) {
-    const workout = await WorkoutModel.findByPk(workoutId);
+    const workoutInDB = await WorkoutModel.findByPk(workoutId);
 
-    if (!workout) {
-        return null;
+    if (!workoutInDB) {
+        throw error("WorkoutId does not exist in the database");
+    }
+
+    if ( updatedWorkout.distance < 0) {
+        throw error("Distance cannot be negative");
     }
 
     const updatedAsModel = updatedWorkout as WorkoutModel;
 
-    const updated = await workout.update(updatedAsModel)
+    const updated = await workoutInDB.update(updatedAsModel)
  
     return updated as IWorkout;
 }

@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPlan } from "../api/planAPI";
-import PlanData  from "../types/PlanData";
+import PlanData from "../types/PlanData";
 
 export function CreatePlanPage() {
-  const [form, setForm] = useState<PlanData>({ weeks: 0, name: "", startDate: "" });
+  const [form, setForm] = useState<PlanData>({
+    weeks: 0,
+    name: "",
+    startDate: "",
+  });
   const [text, setText] = useState("");
   const navigate = useNavigate();
 
-  const endDate = new Date(form.startDate)
+  const endDate = new Date(form.startDate);
   const endDateOffset = endDate.getDay() === 0 ? 7 : endDate.getDay();
 
-  endDate.setDate(endDate.getDate() + form.weeks*7 - endDateOffset)
+  endDate.setDate(endDate.getDate() + form.weeks * 7 - endDateOffset);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement> ) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [event.target.name]: event.target.value,
@@ -29,12 +33,18 @@ export function CreatePlanPage() {
       setText("Weeks must be between 1 and 32");
       return;
     }
+    
+    const startDay = new Date(form.startDate).getDay();
+    if (startDay !== 1) {
+      setText("Start date must be a Monday");
+      return;
+    }
 
     createPlan(form).then((data) => {
       console.log(data);
       setText("Plan created successfully");
       navigate("/");
-    });  
+    });
   };
 
   return (
@@ -56,8 +66,14 @@ export function CreatePlanPage() {
       </label>{" "}
       <br />
       <label>
-        Ending Date: {" "}
-        {form.startDate !== "" && form.startDate !== "" ? endDate.getDate() + "/" + (endDate.getMonth()+1) + "/" +endDate.getFullYear() : "-"}
+        Ending Date:{" "}
+        {form.startDate !== "" && form.weeks !== 0
+          ? endDate.getDate() +
+            "/" +
+            (endDate.getMonth() + 1) +
+            "/" +
+            endDate.getFullYear()
+          : "-"}
       </label>
       <br />
       <button onClick={onSubmit} type="submit">
