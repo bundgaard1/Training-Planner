@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { logoutUser, loginUser, getUser } from "../api/userAPI";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser, getUser } from "../api/userAPI";
 
 const Header = () => {
   const [user, setUser] = useState({} as any);
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("authToken") !== null
   );
+
 
   useEffect(() => {
     const getProfile = async () => {
@@ -22,8 +24,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logoutUser();
-    setIsLoggedIn(false);
-    window.location.reload();
+    navigate("/");
   };
 
   const HeaderButton = ({ title }: { title: string }) => {
@@ -56,20 +57,9 @@ const Header = () => {
 
   const Profile = () => {
     if (isLoggedIn) {
-      return (
-        <div className="text-white">
-          Logged in as {user.username}{" "}
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      );
+      return <div className="text-white">Logged in as {user.username} </div>;
     } else {
-      return (
-        <div className="text-white">
-          <Link className="link" to="/login">
-            Login
-          </Link>
-        </div>
-      );
+      return <div className="text-white">Not logged in</div>;
     }
   };
 
@@ -90,12 +80,12 @@ const Header = () => {
       <Logo />
       <HorizontalLine />
       <Profile />
-      <MainNavLink to="/home" title="Home" />
+      <MainNavLink to="/dashboard" title="Dashboard" />
       <NavGroupHeader title="Plans" />
       <MainNavLink to="/plans" title="Your Plans" />
       <MainNavLink to="/createPlan" title="Create Plan" />
       <HorizontalLine />
-      <MainNavLink to="/" title="Preferences" />
+      <MainNavLink to="/preferences" title="Preferences" />
       <LogoutButton />
     </div>
   );

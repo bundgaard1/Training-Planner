@@ -1,7 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import Daybox from "./Daybox";
-import { PlanProvider, usePlan } from "./PlanContext";
-import PlanSelector from "./PlanSelector";
+import { usePlan } from "../contexts/PlanContext";
 
 const CalendarHeader = () => {
   // header with the days of the week
@@ -16,9 +15,9 @@ const CalendarHeader = () => {
   ];
   return (
     <div className="weekContainer bg-gray-700 flex flex-row justify-between">
-      <div className="weekSummaryBox">Weekly Summary</div>
+      <div className="weekSummaryBox flex-1">Weekly Summary</div>
       {Array.from({ length: 7 }, (_, i) => (
-        <div key={i} className="flex justify-center items-center flex-1">
+        <div key={i} className="weekDay flex justify-center items-center flex-1">
           {daysOfWeek[i]}
         </div>
       ))}
@@ -74,7 +73,7 @@ const WeekContainer = (props: WeekContainerProps) => {
   );
 };
 
-const PlanCalender = () => {
+export const PlanCalender = () => {
   const { plan } = usePlan();
   return (
     <div className="calendar ">
@@ -86,7 +85,7 @@ const PlanCalender = () => {
   );
 };
 
-const PlanHeader = () => {
+export const PlanHeader = () => {
   const { plan } = usePlan();
   return (
     <div className="PlanHeader w-full bg-blue-400">
@@ -95,16 +94,4 @@ const PlanHeader = () => {
   );
 };
 
-const Plan: React.FC = () => {
-  return (
-    <div className="PlanOverview flex flex-1 flex-col">
-      <PlanProvider>
-        <PlanSelector />
-        <PlanHeader />
-        <PlanCalender />
-      </PlanProvider>
-    </div>
-  );
-};
 
-export default Plan;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { usePlan } from "./PlanContext";
+import { usePlan } from "../contexts/PlanContext";
 import { updateWorkout } from "../api/workoutAPI";
 import Modal from "./WorkoutModal";
 import Workout, { defaultWorkout } from "../types/Workout";

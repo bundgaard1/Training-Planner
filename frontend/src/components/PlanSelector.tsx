@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllPlans, getPlan } from "../api/planAPI";
-import { usePlan } from "./PlanContext";
+import { usePlan } from "../contexts/PlanContext";
 import PlanData from "../types/PlanData" 
 
 const PlanSelector = () => {

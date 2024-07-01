@@ -31,5 +31,6 @@ module.exports = {
     port: 9000,
     open: true, // Automatically open the browser on server start
     hot: true, // Enable hot module replacement
+    historyApiFallback: true, // Enable support for client-side routing
   }
 };
