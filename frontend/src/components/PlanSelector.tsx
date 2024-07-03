@@ -3,7 +3,7 @@ import { getAllPlans, getPlan } from "../api/planAPI";
 import { usePlan } from "../contexts/PlanContext";
 import PlanData from "../types/PlanData";
 
-const PlanSelector = () => {
+export const PlanSelector = () => {
   const { setPlan } = usePlan();
   const [allPlans, setAllPlans] = useState<PlanData[]>([]);
 
@@ -14,7 +14,6 @@ const PlanSelector = () => {
     };
 
     fetchPlans();
-
   }, []);
 
   useEffect(() => {
@@ -50,19 +49,18 @@ const PlanSelector = () => {
         </option>
       );
     }
-  }
-
+  };
 
   return (
-    <select
-      className="h-10 bg-slate-300 rounded-lg w-96"
-      onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-        changePlanToTheSelected(parseInt(event.target.value));
-      }}
-    >
-      {getPlanOptions()}
-    </select>
+    <div className="flex flex-row">
+      <select
+        className=" bg-slate-300 rounded-lg w-96 h-10 "
+        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+          changePlanToTheSelected(parseInt(event.target.value));
+        }}
+      >
+        {getPlanOptions()}
+      </select>
+    </div>
   );
 };
-
-export default PlanSelector;

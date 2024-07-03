@@ -14,6 +14,7 @@ const Daybox: React.FC<DayboxProps> = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const day = props.day;
+  const date = new Date
 
   useEffect(() => {
     if (workoutsByDay instanceof Map && workoutsByDay.has(day)) {

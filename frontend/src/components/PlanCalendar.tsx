@@ -2,6 +2,22 @@ import React, { useState, createContext, useContext, useEffect } from "react";
 import Daybox from "./Daybox";
 import { usePlan } from "../contexts/PlanContext";
 
+
+export const PlanCalender = () => {
+  const { plan } = usePlan();
+  return (
+    <div className="overflow-y-auto">
+      <table className="calendar w-full border border-black border-collapse  ">
+        <CalendarHeader />
+        {Array.from({ length: plan.weeks }, (_, i) => (
+          <WeekContainer key={i} week={i + 1} />
+        ))}
+      </table>
+    </div>
+  );
+};
+
+
 const CalendarHeader = () => {
   // header with the days of the week
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -68,25 +84,3 @@ const WeekContainer = (props: WeekContainerProps) => {
   );
 };
 
-export const PlanCalender = () => {
-  const { plan } = usePlan();
-  return (
-    <div className="overflow-y-auto">
-      <table className="calendar w-full border border-black border-collapse  ">
-        <CalendarHeader />
-        {Array.from({ length: plan.weeks }, (_, i) => (
-          <WeekContainer key={i} week={i + 1} />
-        ))}
-      </table>
-    </div>
-  );
-};
-
-export const PlanHeader = () => {
-  const { plan } = usePlan();
-  return (
-    <div className="plan-header w-full bg-gray-300 rounded-3xl p-4 my-3 flex justify-center  ">
-      <h1 className="text-3xl">{plan.name}</h1>
-    </div>
-  );
-};
