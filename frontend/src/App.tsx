@@ -21,8 +21,8 @@ const App: React.FC = () => {
           <Route path="plans" element={<PlansPage />} />
           <Route path="createPlan" element={<CreatePlanPage />} />
           <Route path="preferences" element={<PreferencesPage />} />
-          <Route path="*" element={<div>Not Found</div>} />
         </Route>
+        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </Router>
   );

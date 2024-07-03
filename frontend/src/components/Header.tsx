@@ -9,7 +9,6 @@ const Header = () => {
     localStorage.getItem("authToken") !== null
   );
 
-
   useEffect(() => {
     const getProfile = async () => {
       const user = await getUser();
@@ -19,6 +18,8 @@ const Header = () => {
     };
     if (isLoggedIn) {
       getProfile();
+    } else {
+      navigate("/login");
     }
   }, []);
 
@@ -29,7 +30,7 @@ const Header = () => {
 
   const HeaderButton = ({ title }: { title: string }) => {
     return (
-      <div className="m-2 p-3 rounded-md items-center text-gray-300 font-black text- hover:bg-gray-600 hover:text-white">
+      <div className="m-2 px-6 py-2 rounded-md items-center text-gray-300 font-black text- hover:bg-gray-600 hover:text-white">
         {title}
       </div>
     );
@@ -52,19 +53,19 @@ const Header = () => {
   };
 
   const NavGroupHeader = ({ title }: { title: string }) => {
-    return <div className="text-gray-300 ml-5 mt-5 ">{title}</div>;
+    return <div className="text-gray-300 ml-5 mt-2 ">{title}</div>;
   };
 
   const Profile = () => {
     if (isLoggedIn) {
-      return <div className="text-white">Logged in as {user.username} </div>;
+      return <div className="text-white m-5">Logged in as {user.username} </div>;
     } else {
-      return <div className="text-white">Not logged in</div>;
+      return <div className="text-white m-5">Not logged in</div>;
     }
   };
 
   const HorizontalLine = () => {
-    return <div className="bg-gray-600 h-1 w-80"></div>;
+    return <div className="bg-gray-600 h-1 w-11/12 mx-auto"></div>;
   };
 
   const Logo = () => {
@@ -76,10 +77,11 @@ const Header = () => {
   };
 
   return (
-    <div className="Header bg-gray-800 w-80 h-screen flex flex-col">
+    <div className="Header bg-gray-800 h-screen flex flex-col ">
       <Logo />
       <HorizontalLine />
       <Profile />
+      <HorizontalLine />
       <MainNavLink to="/dashboard" title="Dashboard" />
       <NavGroupHeader title="Plans" />
       <MainNavLink to="/plans" title="Your Plans" />

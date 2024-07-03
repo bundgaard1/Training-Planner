@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api/userAPI";
+import { loginUser, getUser } from "../api/userAPI";
 import { LoginDetails } from "../types/User";
 
 export function LoginPage() {
@@ -10,13 +10,13 @@ export function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const login: LoginDetails = { 
-        username: inputUsername, 
-        password: inputPassword
-      }; 
+      const login: LoginDetails = {
+        username: inputUsername,
+        password: inputPassword,
+      };
       const responseData = await loginUser(login);
       console.log(responseData);
-      navigate("/dashboard"); 
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     }

@@ -43,7 +43,7 @@ export function CreatePlanPage() {
     createPlan(form).then((data) => {
       console.log(data);
       setText("Plan created successfully");
-      navigate("/");
+      navigate("/plans");
     });
   };
 

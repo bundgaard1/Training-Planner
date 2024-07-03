@@ -41,8 +41,8 @@ const Daybox: React.FC<DayboxProps> = (props) => {
   const WorkoutContent = () => {
     const characterLimit = 20;
     return (
-      <div className="dayboxContent">
-        <h3 className="text-xl font-bold">{workout.workoutType}</h3>
+      <div className="dayboxContent ">
+        <h3 className="WorkoutType text-l font-bold">{workout.workoutType}</h3>
         {workout.workoutType !== "Rest" && (
           <div className="distance">
             <p>
@@ -61,8 +61,8 @@ const Daybox: React.FC<DayboxProps> = (props) => {
 
   const DayboxHeader = () => {
     return (
-      <div className="dayboxHeader bg-neutral-700 flex justify-between h-10">
-        <p className="hej m-0 p-1">{day}</p>
+      <div className="dayboxHeader flex justify-between">
+        <p className="dayNum m-1 p-0">{day}</p>
         {workout && workout.isCompleted && (
           <div className="completedIcon">&#10003;</div>
         )}
@@ -81,7 +81,7 @@ const Daybox: React.FC<DayboxProps> = (props) => {
   }
 
   return (
-    <div className="Daybox h-32 flex-1 border-black bg-slate-400 " onClick={handleBoxClick}>
+    <td className="Daybox flex-1 flex flex-col border-collapse border border-black" onClick={handleBoxClick}>
       <DayboxHeader />
       <WorkoutContent />
       {isModalOpen && (
@@ -91,7 +91,7 @@ const Daybox: React.FC<DayboxProps> = (props) => {
           setIsModalOpen={setIsModalOpen}
         />
       )}
-    </div>
+    </td>
   );
 };
 

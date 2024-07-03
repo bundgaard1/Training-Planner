@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getAllPlans, getPlan } from "../api/planAPI";
 import { usePlan } from "../contexts/PlanContext";
-import PlanData from "../types/PlanData" 
+import PlanData from "../types/PlanData";
 
 const PlanSelector = () => {
-  const { plan, setPlan, workoutsByDay, setWorkoutsByDay } = usePlan();
+  const { setPlan } = usePlan();
   const [allPlans, setAllPlans] = useState<PlanData[]>([]);
-  const [inputPlanId, setInputPlanId] = useState(0);
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -15,38 +14,54 @@ const PlanSelector = () => {
     };
 
     fetchPlans();
+
   }, []);
 
-  const changePlanToTheSelected = async () => {
+  useEffect(() => {
+    if (allPlans.length > 0) {
+      changePlanToTheSelected(allPlans[0].id!);
+    }
+  }, [allPlans]);
+
+  const changePlanToTheSelected = async (inputPlanId: number) => {
     if (inputPlanId !== 0) {
-      const selectedPlan: PlanData = await getPlan(inputPlanId); 
+      const selectedPlan: PlanData = await getPlan(inputPlanId);
       setPlan(selectedPlan);
     }
   };
-  
-  return (
-    <div>
-      <h3>Select Plan</h3>
-      <select
-        value={inputPlanId}
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          setInputPlanId(parseInt(event.target.value, 10));
-        }}
-      >
+
+  const getPlanOptions = () => {
+    if (allPlans.length === 0) {
+      return (
         <option value={0} key={0}>
-          Select Plan
+          No Plans Available
         </option>
-        {allPlans &&
-          allPlans.length > 0 &&
-          allPlans.map((plan) => (
-            <option value={plan.id} key={plan.id!}>
-              {plan.name} ({plan.weeks} weeks)
-            </option>
-          ))}
-      </select>
-      <br></br>
-      <button onClick={changePlanToTheSelected}>Get Plan</button>
-    </div>
+      );
+    } else if (allPlans.length > 0) {
+      return allPlans.map((plan) => (
+        <option value={plan.id} key={plan.id!}>
+          {plan.name} ({plan.weeks} weeks)
+        </option>
+      ));
+    } else {
+      return (
+        <option value={0} key={0}>
+          Something went wrong
+        </option>
+      );
+    }
+  }
+
+
+  return (
+    <select
+      className="h-10 bg-slate-300 rounded-lg w-96"
+      onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+        changePlanToTheSelected(parseInt(event.target.value));
+      }}
+    >
+      {getPlanOptions()}
+    </select>
   );
 };
 

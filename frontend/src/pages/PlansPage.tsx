@@ -4,7 +4,7 @@ import PlanSelector from "../components/PlanSelector";
 
 export function PlansPage() {
   return (
-    <div className="PlanOverview flex flex-1 flex-col">
+    <div className="PlanOverview flex flex-1 flex-col m-4">
       <PlanProvider>
         <PlanSelector />
         <PlanHeader />

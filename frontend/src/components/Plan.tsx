@@ -4,24 +4,21 @@ import { usePlan } from "../contexts/PlanContext";
 
 const CalendarHeader = () => {
   // header with the days of the week
-  const daysOfWeek = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   return (
-    <div className="weekContainer bg-gray-700 flex flex-row justify-between">
-      <div className="weekSummaryBox flex-1">Weekly Summary</div>
+    <thead className="weekHeaderContainer bg-gray-300 flex flex-row justify-between sticky">
+      <th className="weekSummaryHeader bg-gray-500 flex justify-center items-center flex-1 border border-black border-collapse sticky">
+        Weekly Summary
+      </th>
       {Array.from({ length: 7 }, (_, i) => (
-        <div key={i} className="weekDay flex justify-center items-center flex-1">
+        <th
+          key={i}
+          className="weekDay flex justify-center items-center flex-1 border border-black border-collapse sticky"
+        >
           {daysOfWeek[i]}
-        </div>
+        </th>
       ))}
-    </div>
+    </thead>
   );
 };
 
@@ -49,38 +46,38 @@ const WeekContainer = (props: WeekContainerProps) => {
     setWeekDistance(newWeekDistance);
   }, [workoutsByDay]);
 
-  if (week === 0) {
+  const WeekSummary = () => {
     return (
-      <div>
-        <h1>Plan not selected</h1>
-      </div>
-    );
-  }
-
-  return (
-    <div key={week} className="weekContainer flex w-max">
-      <div className="weekSummaryBox border-2 bg-gray-500 flex flex-col w-48">
+      <td className="weekSummaryBox flex flex-1 bg-gray-500 flex-col border border-black border-collapse  ">
         <h2 className="m-0">Week {week}</h2>
         <p className="m-0">
           Date: {thisWeekStartDate.getDate()}/{thisWeekStartDate.getMonth() + 1}{" "}
         </p>
         <div>Total distance: {weekDistance}</div>
-      </div>
+      </td>
+    );
+  };
+
+  return (
+    <thead key={week} className="weekContainer flex flex-row w-full h-28 ">
+      <WeekSummary />
       {Array.from({ length: 7 }, (_, i) => (
         <Daybox key={i} day={1 + 7 * (week - 1) + i} />
       ))}
-    </div>
+    </thead>
   );
 };
 
 export const PlanCalender = () => {
   const { plan } = usePlan();
   return (
-    <div className="calendar ">
-      <CalendarHeader />
-      {Array.from({ length: plan.weeks }, (_, i) => (
-        <WeekContainer key={i} week={i + 1} />
-      ))}
+    <div className="overflow-y-auto">
+      <table className="calendar w-full border border-black border-collapse  ">
+        <CalendarHeader />
+        {Array.from({ length: plan.weeks }, (_, i) => (
+          <WeekContainer key={i} week={i + 1} />
+        ))}
+      </table>
     </div>
   );
 };
@@ -88,10 +85,8 @@ export const PlanCalender = () => {
 export const PlanHeader = () => {
   const { plan } = usePlan();
   return (
-    <div className="PlanHeader w-full bg-blue-400">
-      <h1>{plan.name}</h1>
+    <div className="plan-header w-full bg-gray-300 rounded-3xl p-4 my-3 flex justify-center  ">
+      <h1 className="text-3xl">{plan.name}</h1>
     </div>
   );
 };
-
-
