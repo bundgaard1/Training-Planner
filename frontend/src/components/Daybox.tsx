@@ -42,8 +42,8 @@ const Daybox: React.FC<DayboxProps> = (props) => {
   const WorkoutContent = () => {
     const characterLimit = 20;
     return (
-      <div className="dayboxContent ">
-        <h3 className="WorkoutType text-l font-bold">{workout.workoutType}</h3>
+      <div className="dayboxContent">
+        <h3 className="WorkoutType text-l font-bold text-center">{workout.workoutType}</h3>
         {workout.workoutType !== "Rest" && (
           <div className="distance">
             <p>

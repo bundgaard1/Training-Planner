@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PlanProvider } from "../contexts/PlanContext";
-import { PlanCalender} from "../components/PlanCalendar";
-import {PlanSelector} from "../components/PlanSelector";
+import { PlanCalender } from "../components/PlanCalendar";
+import { PlanSelector } from "../components/PlanSelector";
 import { PlanAnalytics } from "../components/PlanAnalytics";
 
 import { usePlan } from "../contexts/PlanContext";
@@ -22,15 +22,18 @@ export function PlansPage() {
 
   const ModeSelector = () => {
     return (
-      <div className="flex flex-row justify-center">
-        <ModeSelectorButton mode="Calendar" />
-        <ModeSelectorButton mode="Analytics" />
+      <div className="my-2">
+        <div className="modeButtons flex flex-row bg-gray-300 rounded-3xl w- ">
+          <ModeSelectorButton mode="Calendar" />
+          <ModeSelectorButton mode="Analytics" />
+        </div>
       </div>
     );
   };
+
   const ModeSelectorButton = (props: { mode: viewMode }) => (
     <button
-      className={`m-2 p-2 border border-black ${
+      className={`m-2 p-1 rounded-xl flex-1 ${
         mode === props.mode ? "bg-gray-500" : ""
       }`}
       onClick={() => setMode(props.mode)}
