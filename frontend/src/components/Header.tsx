@@ -4,10 +4,10 @@ import { logoutUser, getUser } from "../api/userAPI";
 
 const Header = () => {
   const [user, setUser] = useState({} as any);
-  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("authToken") !== null
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProfile = async () => {
@@ -31,7 +31,7 @@ const Header = () => {
   const HeaderButton = ({ title }: { title: string }) => {
     return (
       <div className="m-2 px-6 py-2 rounded-md items-center text-gray-300 font-black text- hover:bg-gray-600 hover:text-white">
-        {title}
+        { title}
       </div>
     );
   };
@@ -58,7 +58,11 @@ const Header = () => {
 
   const Profile = () => {
     if (isLoggedIn) {
-      return <div className="text-white m-5">Logged in as {user.username} </div>;
+      return (
+        <div className="text-white m-5">
+          Logged in as <span className="font-bold">{user.username}</span>
+        </div>
+      );
     } else {
       return <div className="text-white m-5">Not logged in</div>;
     }

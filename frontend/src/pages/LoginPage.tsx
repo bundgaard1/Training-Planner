@@ -24,7 +24,7 @@ export function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">Login Page</h1>
+      <h1 className="text-3xl font-bold mb-4">Login</h1>
       <div className="flex flex-col space-y-2">
         <label className="text-lg">Username</label>
         <input
@@ -43,12 +43,20 @@ export function LoginPage() {
           className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <button
-        onClick={handleLogin}
-        className="px-4 py-2 mt-4 text-lg font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Login
-      </button>
+      <div className="mt-4 flex flex-col ">
+        <button
+          onClick={handleLogin}
+          className="px-4 py-2 mt-4 text-lg font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Login
+        </button>
+        <a
+          href="/register"
+          className="px-4 py-2 mt-4 text-lg text-black bg-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Register
+        </a>
+      </div>
     </div>
   );
 }

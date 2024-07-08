@@ -7,6 +7,9 @@ export function HomePage() {
       <Link to="/login" className="px-4 py-2 bg-blue-500 text-white rounded-md">
         Login
       </Link>
+      <Link to="/login" className="px-4 py-2 bg-whute text-white rounded-md">
+        Register
+      </Link>
     </div>
   );
 }
