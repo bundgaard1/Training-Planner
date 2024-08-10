@@ -1,6 +1,6 @@
 # Traning Planner
 
-![Training Plans](images/overview.png)
+![Training Plans](images/Overview.png)
 
 ## Description
 
@@ -20,7 +20,7 @@ npm install
 npm start
 ```
 
-(Runs on port 900 by default)
+(Runs on port 9000 by default)
 
 ### Backend
 
