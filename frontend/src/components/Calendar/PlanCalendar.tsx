@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Daybox from "./Daybox";
-import { usePlan } from "../contexts/PlanContext";
+import { usePlan } from "../../contexts/PlanContext";
 
 export const PlanCalender = () => {
 	const { plan } = usePlan();
@@ -11,7 +11,7 @@ export const PlanCalender = () => {
 
 	return (
 		<div className="overflow-y-auto">
-			<table className="calendar w-full border border-black border-collapse  ">
+			<table className="calendar w-full table-fixed border-b-2">
 				<CalendarHeader />
 				{Array.from({ length: plan.weeks }, (_, i) => (
 					<WeekContainer key={i} week={i + 1} />
@@ -21,19 +21,20 @@ export const PlanCalender = () => {
 	);
 };
 
+const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+// header with the days of the week
 const CalendarHeader = () => {
-	// header with the days of the week
-	const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 	return (
-		<thead className="weekHeaderContainer bg-gray-300 ">
-			<tr className="flex flex-row justify-between sticky">
-				<th className="weekSummaryHeader bg-gray-500 flex justify-center items-center flex-1 border border-black border-collapse sticky">
+		<thead className="weekHeaderContainer bg-gray-500 sticky top-0 ">
+			<tr className="flex flex-row justify-between border-2 border-black">
+				<th className="weekSummaryHeader flex justify-center items-center flex-1 border-r border-black sticky">
 					Weekly Summary
 				</th>
 				{Array.from({ length: 7 }, (_, i) => (
 					<th
 						key={i}
-						className="weekDay flex justify-center items-center flex-1 border border-black border-collapse sticky"
+						className="weekDay flex justify-center items-center flex-1 border-r border-black border-collapse sticky"
 					>
 						{daysOfWeek[i]}
 					</th>
@@ -54,6 +55,7 @@ const WeekContainer = (props: WeekContainerProps) => {
 
 	const thisWeekStartDate = new Date(plan.startDate);
 	thisWeekStartDate.setDate(thisWeekStartDate.getDate() + 7 * (week - 1));
+	const today = new Date();
 
 	useEffect(() => {
 		const newWeekDistance = Array.from({ length: 7 }, (_, i) => {
@@ -69,11 +71,12 @@ const WeekContainer = (props: WeekContainerProps) => {
 
 	const WeekSummary = () => {
 		return (
-			<td className="weekSummaryBox flex flex-1 bg-gray-500 flex-col border border-black border-collapse  ">
-				<h2 className="m-0">Week {week}</h2>
-				<p className="m-0">
-					Date: {thisWeekStartDate.getDate()}/{thisWeekStartDate.getMonth() + 1}{" "}
-				</p>
+			<td className="weekSummaryBox flex flex-1 p-0 bg-gray-400 flex-col border-r border-black ">
+				<h2 className="m-0 font-bold">Week {week}</h2>
+				{/* <p className="m-0">
+					Date: {thisWeekStartDate.getDate()}{" "}
+					{thisWeekStartDate.toDateString().substring(4, 7)}{" "}
+				</p> */}
 				<p className="m-0">Total distance: {weekDistance}</p>
 			</td>
 		);
@@ -81,10 +84,13 @@ const WeekContainer = (props: WeekContainerProps) => {
 
 	return (
 		<tbody>
-			<tr key={week} className="weekContainer flex flex-row w-full h-28 ">
+			<tr
+				key={week}
+				className="weekContainer flex flex-row w-full h-28 border-b border-l-2 border-r-2 border-black "
+			>
 				<WeekSummary />
 				{Array.from({ length: 7 }, (_, i) => (
-					<Daybox key={i} day={1 + 7 * (week - 1) + i} />
+					<Daybox key={i} planDay={1 + 7 * (week - 1) + i} />
 				))}
 			</tr>
 		</tbody>

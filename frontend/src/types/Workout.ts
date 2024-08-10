@@ -1,21 +1,25 @@
 export default interface Workout {
-	id: number;
-	day: number;
 	workoutType: string;
 	distance: number;
+	duration: number; // Seconds
+	avgPace: number; // Seconds per kilometer
 	description: string;
 	isCompleted: boolean;
+	day: number;
+	id: number;
 }
 
 // default workout
 
 export const defaultWorkout: Workout = {
-	id: 0,
-	day: 0,
 	workoutType: "Rest",
 	distance: 0,
+	duration: 0,
+	avgPace: 0,
 	description: "",
 	isCompleted: false,
+	day: 0,
+	id: 0,
 };
 
 // workout types

@@ -2,65 +2,78 @@ import React, { useState, useEffect } from "react";
 import { getAllPlans, getPlan } from "../api/planAPI";
 import { usePlan } from "../contexts/PlanContext";
 import PlanData from "../types/PlanData";
+import Modal from "./Modal";
+import { planPeriod } from "../utils/planUtils";
 
-export const PlanSelector = () => {
-  const { setPlan } = usePlan();
-  const [allPlans, setAllPlans] = useState<PlanData[]>([]);
+interface PlanSelectorProps {
+	setSelectPlan: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  useEffect(() => {
-    const fetchPlans = async () => {
-      const plans = await getAllPlans();
-      setAllPlans(plans);
-    };
+export const PlanSelector = (props: PlanSelectorProps) => {
+	const { setPlan } = usePlan();
+	const [allPlans, setAllPlans] = useState<PlanData[]>([]);
 
-    fetchPlans();
-  }, []);
+	useEffect(() => {
+		const fetchPlans = async () => {
+			const plans = await getAllPlans();
+			setAllPlans(plans);
+		};
 
-  useEffect(() => {
-    if (allPlans.length > 0) {
-      changePlanToTheSelected(allPlans[0].id!);
-    }
-  }, [allPlans]);
+		fetchPlans();
+	}, []);
 
-  const changePlanToTheSelected = async (inputPlanId: number) => {
-    if (inputPlanId !== 0) {
-      const selectedPlan: PlanData = await getPlan(inputPlanId);
-      setPlan(selectedPlan);
-    }
-  };
+	const changePlanToTheSelected = async (inputPlanId: number) => {
+		if (inputPlanId !== 0) {
+			const selectedPlan: PlanData = await getPlan(inputPlanId);
+			setPlan(selectedPlan);
+			props.setSelectPlan(false);
+		}
+	};
 
-  const getPlanOptions = () => {
-    if (allPlans.length === 0) {
-      return (
-        <option value={0} key={0}>
-          No Plans Available
-        </option>
-      );
-    } else if (allPlans.length > 0) {
-      return allPlans.map((plan) => (
-        <option value={plan.id} key={plan.id!}>
-          {plan.name} ({plan.weeks} weeks)
-        </option>
-      ));
-    } else {
-      return (
-        <option value={0} key={0}>
-          Something went wrong
-        </option>
-      );
-    }
-  };
+	const ModalHeader = () => {
+		return (
+			<div className=" text-xl font-bold p-2 self-center">Select a Plan</div>
+		);
+	};
 
-  return (
-    <div className="flex flex-row">
-      <select
-        className=" bg-slate-300 rounded-lg w-96 h-10 "
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          changePlanToTheSelected(parseInt(event.target.value));
-        }}
-      >
-        {getPlanOptions()}
-      </select>
-    </div>
-  );
+	const ModalContent = () => {
+		return (
+			<div className="flex-col flex-grow">
+				{allPlans.map(plan => (
+					<div
+						key={plan.id}
+						className="planSelectorItem bg-gray-300 rounded-xl p-4 mb-2 mx-2"
+						onClick={() => changePlanToTheSelected(plan.id as number)}
+					>
+						<div className="text-xl font-bold">{plan.name}</div>
+						<div>{plan.weeks} weeks</div>
+						<div>{planPeriod(plan)}</div>
+					</div>
+				))}
+			</div>
+		);
+	};
+
+	const ModalFooter = () => {
+		return (
+			<div className="p-2 flex">
+				<div
+					className="bg-red-400 p-1 rounded-lg"
+					onClick={() => {
+						props.setSelectPlan(false);
+					}}
+				>
+					Close
+				</div>
+			</div>
+		);
+	};
+
+	return (
+		<Modal setIsModalOpen={props.setSelectPlan}>
+			<ModalHeader />
+			<ModalContent />
+			<ModalFooter />
+		</Modal>
+	);
 };

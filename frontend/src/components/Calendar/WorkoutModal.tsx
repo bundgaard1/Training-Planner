@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Workout from "../types/Workout";
-import { WorkoutTypes, defaultWorkout } from "../types/Workout";
+import Workout from "../../types/Workout";
+import { WorkoutTypes, defaultWorkout } from "../../types/Workout";
+import Modal from "../Modal";
 
 // Extend the WorkoutOptionRowProps interface
 interface WorkoutOptionRowProps {
@@ -47,7 +48,7 @@ const WorkoutOptionRow = (props: WorkoutOptionRowProps) => {
 				)}
 			</div>
 			<div className="OptionColumn flex-1">
-				<label className="ml-1">{unit}</label>
+				<label className="ml-1 text-sm">{unit}</label>
 			</div>
 		</div>
 	);
@@ -125,6 +126,8 @@ const WorkoutModal: React.FC<WorkoutModalProps> = props => {
 			...tempWorkout,
 			workoutType: defaultWorkout.workoutType,
 			distance: defaultWorkout.distance,
+			duration: defaultWorkout.duration,
+			avgPace: defaultWorkout.avgPace,
 			description: defaultWorkout.description,
 			isCompleted: defaultWorkout.isCompleted,
 		});
@@ -170,44 +173,48 @@ const WorkoutModal: React.FC<WorkoutModalProps> = props => {
 	};
 
 	return (
-		<div
-			className="fullScreenModalLayer fixed w-full h-full z-10 top-0 bottom-0 left-0 right-0 bg-black bg-opacity-45"
-			onClick={event => {
-				event.stopPropagation();
-				props.setIsModalOpen(false);
-			}}
-		>
-			<div
-				className="modal fixed w-96 h-auto min-h-80 z-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-200 
-            rounded-xl flex flex-col"
-				onClick={event => event.stopPropagation()}
-			>
-				<ModalHeader />
-				<div className="ModelContent flex-grow mt-2">
-					<WorkoutOptionRow
-						title="Workout Type"
-						name="workoutType"
-						type="select"
-						value={tempWorkout.workoutType}
-						selectOptions={WorkoutTypes}
-						onChange={handleFormChange}
-					/>
-					<WorkoutOptionRow
-						title="Distance"
-						name="distance"
-						type="number"
-						value={tempWorkout.distance}
-						unit="km"
-						onChange={handleFormChange}
-					/>
-				</div>
-				<Description
-					value={tempWorkout.description}
+		<Modal setIsModalOpen={props.setIsModalOpen}>
+			<ModalHeader />
+			<div className="ModelContent flex-grow mt-2">
+				<WorkoutOptionRow
+					title="Workout Type"
+					name="workoutType"
+					type="select"
+					value={tempWorkout.workoutType}
+					selectOptions={WorkoutTypes}
 					onChange={handleFormChange}
 				/>
-				<ModalFooter />
+				<WorkoutOptionRow
+					title="Distance"
+					name="distance"
+					type="number"
+					value={tempWorkout.distance}
+					unit="km"
+					onChange={handleFormChange}
+				/>
+				<WorkoutOptionRow
+					title="Duration"
+					name="duration"
+					type="number"
+					value={tempWorkout.duration}
+					unit="min"
+					onChange={handleFormChange}
+				/>
+				<WorkoutOptionRow
+					title="Average Pace"
+					name="avgPace"
+					type="number"
+					value={tempWorkout.avgPace}
+					unit="min/km"
+					onChange={handleFormChange}
+				/>
 			</div>
-		</div>
+			<Description
+				value={tempWorkout.description}
+				onChange={handleFormChange}
+			/>
+			<ModalFooter />
+		</Modal>
 	);
 };
 

@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { usePlan } from "../contexts/PlanContext";
-import { updateWorkout } from "../api/workoutAPI";
+import { usePlan } from "../../contexts/PlanContext";
+import { updateWorkout } from "../../api/workoutAPI";
 import Modal from "./WorkoutModal";
-import Workout, { defaultWorkout } from "../types/Workout";
+import Workout, { defaultWorkout } from "../../types/Workout";
 
 interface DayboxProps {
-	day: number;
+	planDay: number;
 }
 
 const Daybox: React.FC<DayboxProps> = props => {
 	const [workout, setWorkout] = useState<Workout>(defaultWorkout);
-	const { workoutsByDay, setWorkoutsByDay } = usePlan();
+	const { plan, workoutsByDay, setWorkoutsByDay } = usePlan();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const day = props.day;
-	const date = new Date();
+
+	// Date stuff
+	const day = props.planDay;
+	const dayDate = new Date(plan.startDate);
+	dayDate.setDate(dayDate.getDate() + day - 1);
+	const today = new Date();
+	const isToday =
+		dayDate.getDate() === today.getDate() &&
+		dayDate.getMonth() === today.getMonth() &&
+		dayDate.getFullYear() === today.getFullYear();
+
 	// CharacterLimit base on width of the box
-	const characterLimit = 20;
+	const characterLimit = 50;
 
 	useEffect(() => {
 		if (workoutsByDay instanceof Map && workoutsByDay.has(day)) {
@@ -57,10 +66,17 @@ const Daybox: React.FC<DayboxProps> = props => {
 		);
 	};
 
+	const headerColor = isToday ? "bg-blue-400" : "bg-gray-300";
+
 	const DayboxHeader = () => {
 		return (
-			<div className="dayboxHeader flex justify-between">
-				<p className="dayNum m-0 p-0">{day}</p>
+			<div
+				className={`dayboxHeader flex justify-between border-black ${headerColor} pl-2`}
+			>
+				{dayDate.getDate()}{" "}
+				{dayDate.getDate() === 1 && dayDate.toDateString().substring(4, 7)}
+				{isToday && " (Today)"}
+				{/* <p className="dayNum m-0 p-0">{day}</p> */}
 				{workout && workout.isCompleted && (
 					<div className="completedIcon">&#10003;</div>
 				)}
@@ -80,7 +96,7 @@ const Daybox: React.FC<DayboxProps> = props => {
 
 	return (
 		<td
-			className="Daybox flex-1 flex flex-col border-collapse border border-black"
+			className="Daybox flex-1 flex flex-col p-0 border-collapse border-r border-black"
 			onClick={handleBoxClick}
 		>
 			<DayboxHeader />

@@ -1,21 +1,35 @@
 import React, { useState } from "react";
 import { PlanProvider } from "../contexts/PlanContext";
-import { PlanCalender } from "../components/PlanCalendar";
+import { PlanCalender } from "../components/Calendar/PlanCalendar";
 import { PlanSelector } from "../components/PlanSelector";
-import { PlanAnalytics } from "../components/PlanAnalytics";
-
+import { PlanAnalytics } from "../components/Analytics/PlanAnalytics";
 import { usePlan } from "../contexts/PlanContext";
+import { planPeriod } from "../utils/planUtils";
 
 type viewMode = "Calendar" | "Analytics";
 
 export function PlansPage() {
 	const [mode, setMode] = useState<viewMode>("Calendar");
+	const [selectPlan, setSelectPlan] = useState<boolean>(false);
 
 	const PlanHeader = () => {
 		const { plan } = usePlan();
+
 		return (
-			<div className="plan-header w-full bg-gray-300 rounded-3xl p-4 my-3 flex justify-center  ">
-				<h1 className="text-3xl">{plan.name}</h1>
+			<div className="plan-header w-full bg-gray-300 rounded-xl p-3 mb-3 flex flex-row">
+				<div className="text-xl font-bold mr-10">{plan.name}</div>
+				<div className="flex flex-row flex-grow">
+					<div className="mr-10 self-center">{plan.weeks} weeks</div>
+					<div className="mr-10 self-center">{planPeriod(plan)}</div>
+				</div>
+				<div
+					className="bg-gray-400 p-1 rounded-lg place-self-end"
+					onClick={() => {
+						setSelectPlan(true);
+					}}
+				>
+					Change Plan
+				</div>
 			</div>
 		);
 	};
@@ -23,7 +37,7 @@ export function PlansPage() {
 	const ModeSelector = () => {
 		return (
 			<div className="my-2">
-				<div className="modeButtons flex flex-row bg-gray-300 rounded-xl w- ">
+				<div className="modeButtons flex flex-row bg-gray-300 rounded-xl">
 					<ModeSelectorButton mode="Calendar" />
 					<ModeSelectorButton mode="Analytics" />
 				</div>
@@ -31,16 +45,18 @@ export function PlansPage() {
 		);
 	};
 
-	const ModeSelectorButton = (props: { mode: viewMode }) => (
-		<button
-			className={`m-2 p-1 rounded-md flex-1 ${
-				mode === props.mode ? "bg-gray-500" : ""
-			}`}
-			onClick={() => setMode(props.mode)}
-		>
-			{props.mode}
-		</button>
-	);
+	const ModeSelectorButton = (props: { mode: viewMode }) => {
+		const bgColor = mode === props.mode ? "bg-gray-700" : "bg-gray-400";
+		const textColor = mode === props.mode ? "text-white" : "text-black";
+		return (
+			<button
+				className={`m-2 p-1 rounded-md flex-1 ${bgColor} ${textColor}`}
+				onClick={() => setMode(props.mode)}
+			>
+				{props.mode}
+			</button>
+		);
+	};
 
 	const ModeContent = () => {
 		if (mode === "Calendar") {
@@ -53,7 +69,7 @@ export function PlansPage() {
 	return (
 		<div className="PlansPage flex flex-1 flex-col m-4 ">
 			<PlanProvider>
-				<PlanSelector />
+				{selectPlan && <PlanSelector setSelectPlan={setSelectPlan} />}
 				<PlanHeader />
 				<ModeSelector />
 				<ModeContent />
