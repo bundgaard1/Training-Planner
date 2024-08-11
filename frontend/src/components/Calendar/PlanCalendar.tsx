@@ -26,8 +26,8 @@ const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 // header with the days of the week
 const CalendarHeader = () => {
 	return (
-		<thead className="weekHeaderContainer bg-gray-500 sticky top-0 ">
-			<tr className="flex flex-row justify-between border-2 border-black">
+		<thead className="weekHeaderContainer bg-gray-700 sticky top-0 ">
+			<tr className="flex flex-row justify-between border-2 border-black text-white">
 				<th className="weekSummaryHeader flex justify-center items-center flex-1 border-r border-black sticky">
 					Weekly Summary
 				</th>
@@ -71,13 +71,13 @@ const WeekContainer = (props: WeekContainerProps) => {
 
 	const WeekSummary = () => {
 		return (
-			<td className="weekSummaryBox flex flex-1 p-0 bg-gray-400 flex-col border-r border-black ">
+			<td className="weekSummaryBox flex flex-1 p-0 bg-gray-300 flex-col border-r border-black ">
 				<h2 className="m-0 font-bold">Week {week}</h2>
 				{/* <p className="m-0">
 					Date: {thisWeekStartDate.getDate()}{" "}
 					{thisWeekStartDate.toDateString().substring(4, 7)}{" "}
 				</p> */}
-				<p className="m-0">Total distance: {weekDistance}</p>
+				<p className="m-0">Volume: {weekDistance} km</p>
 			</td>
 		);
 	};
@@ -86,7 +86,7 @@ const WeekContainer = (props: WeekContainerProps) => {
 		<tbody>
 			<tr
 				key={week}
-				className="weekContainer flex flex-row w-full h-28 border-b border-l-2 border-r-2 border-black "
+				className="weekContainer flex flex-row w-full h-28 border-b-2 border-l-2 border-r-2 border-black "
 			>
 				<WeekSummary />
 				{Array.from({ length: 7 }, (_, i) => (

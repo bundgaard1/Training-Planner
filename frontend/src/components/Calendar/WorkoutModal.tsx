@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import Workout from "../../types/Workout";
 import { WorkoutTypes, defaultWorkout } from "../../types/Workout";
 import Modal from "../Modal";
+import {
+	distanceStingToNumber,
+	distanceString,
+	timeStringToNumber,
+	timeString,
+} from "../../utils/workoutFieldFormat";
 
 // Extend the WorkoutOptionRowProps interface
 interface WorkoutOptionRowProps {
 	title: string;
 	value: string | number | boolean;
-	type: "text" | "number" | "select" | "checkbox";
+	type: "text" | "select";
 	name: string;
 	unit?: string; // Default value
 	selectOptions?: { [key: string]: string }; // For select type
@@ -65,7 +71,7 @@ const Description = (props: {
 			<div className="descriptionTitle font-bold">Description</div>
 			<div className=" ">
 				<textarea
-					className="descriptionInput rounded-md w-full min-h-20 text-slate-600 appearance-none rounded px-3.5 py-2.5"
+					className="descriptionInput rounded-md w-full min-h-15 text-slate-600 appearance-none rounded px-3.5 py-2.5"
 					name="description"
 					value={value}
 					onChange={onChange}
@@ -92,18 +98,29 @@ const WorkoutModal: React.FC<WorkoutModalProps> = props => {
 		const { name, value, type } = event.target;
 		let parsedValue;
 
-		switch (type) {
-			case "number":
-				parsedValue = parseFloat(value);
-				if (isNaN(parsedValue)) {
-					parsedValue = ""; // or a default numeric value, e.g., 0
+		switch (name) {
+			case "distance":
+				// check for non-numeric values, empty is allowed
+				if (!/^\d*\.?\d*$/.test(value)) {
+					return;
 				}
+				parsedValue = distanceStingToNumber(value);
 				break;
-			case "checkbox":
-				parsedValue = (event.target as HTMLInputElement).checked;
+			case "duration":
+				if (!/^\d+(:\d+)?$/.test(value)) {
+					return;
+				}
+				parsedValue = timeStringToNumber(value);
+				break;
+			case "avgPace":
+				if (!/^\d+(:\d+)?$/.test(value)) {
+					return;
+				}
+				parsedValue = timeStringToNumber(value);
 				break;
 			default:
 				parsedValue = value;
+				break;
 		}
 
 		setTempWorkout({
@@ -184,30 +201,34 @@ const WorkoutModal: React.FC<WorkoutModalProps> = props => {
 					selectOptions={WorkoutTypes}
 					onChange={handleFormChange}
 				/>
-				<WorkoutOptionRow
-					title="Distance"
-					name="distance"
-					type="number"
-					value={tempWorkout.distance}
-					unit="km"
-					onChange={handleFormChange}
-				/>
-				<WorkoutOptionRow
-					title="Duration"
-					name="duration"
-					type="number"
-					value={tempWorkout.duration}
-					unit="min"
-					onChange={handleFormChange}
-				/>
-				<WorkoutOptionRow
-					title="Average Pace"
-					name="avgPace"
-					type="number"
-					value={tempWorkout.avgPace}
-					unit="min/km"
-					onChange={handleFormChange}
-				/>
+				{tempWorkout.workoutType !== "Rest" && (
+					<>
+						<WorkoutOptionRow
+							title="Distance"
+							name="distance"
+							type="text"
+							value={distanceString(tempWorkout.distance)}
+							unit="km"
+							onChange={handleFormChange}
+						/>
+						<WorkoutOptionRow
+							title="Duration"
+							name="duration"
+							type="text"
+							value={timeString(tempWorkout.duration)}
+							unit="h:m"
+							onChange={handleFormChange}
+						/>
+						<WorkoutOptionRow
+							title="Average Pace"
+							name="avgPace"
+							type="text"
+							value={timeString(tempWorkout.avgPace)}
+							unit="min/km"
+							onChange={handleFormChange}
+						/>
+					</>
+				)}
 			</div>
 			<Description
 				value={tempWorkout.description}
@@ -217,5 +238,7 @@ const WorkoutModal: React.FC<WorkoutModalProps> = props => {
 		</Modal>
 	);
 };
+
+// Helper functions
 
 export default WorkoutModal;

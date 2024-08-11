@@ -36,12 +36,12 @@ export function PlansPage() {
 
 	const ModeSelector = () => {
 		return (
-			<div className="my-2">
-				<div className="modeButtons flex flex-row bg-gray-300 rounded-xl">
+			<>
+				<div className="modeButtons flex flex-row bg-gray-300 rounded-xl mb-2">
 					<ModeSelectorButton mode="Calendar" />
 					<ModeSelectorButton mode="Analytics" />
 				</div>
-			</div>
+			</>
 		);
 	};
 
