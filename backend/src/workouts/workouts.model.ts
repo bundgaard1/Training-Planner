@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../database";
-import PlanModel from "./plans.model";
-import { IWorkout } from "../interfaces/workouts.interface";
+import PlanModel from "../plans/plans.model";
+import { IWorkout } from "./workouts.interface";
 
 interface WorkoutCreationAttributes extends Optional<IWorkout, "id"> {}
 

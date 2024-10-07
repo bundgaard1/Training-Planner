@@ -1,6 +1,6 @@
-import WorkoutModel from "../models/workouts.model";
-import PlanModel from "../models/plans.model";
-import { IPlan } from "../interfaces/plans.interface";
+import WorkoutModel from "../workouts/workouts.model";
+import PlanModel from "./plans.model";
+import { IPlan } from "./plans.interface";
 
 export async function createWorkoutsForPlan(plan: IPlan, weeks: number) {
 	for (let i = 0; i < weeks; i++) {
