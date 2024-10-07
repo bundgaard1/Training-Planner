@@ -89,7 +89,7 @@ const Header = () => {
 			<MainNavLink to="/dashboard" title="Dashboard" />
 			<NavGroupHeader title="Plans" />
 			<MainNavLink to="/plans" title="Your Plans" />
-			<MainNavLink to="/createPlan" title="Create Plan" />
+			<MainNavLink to="/createPlan" title="Create New Plan" />
 			<HorizontalLine />
 			<MainNavLink to="/preferences" title="Preferences" />
 			<LogoutButton />
