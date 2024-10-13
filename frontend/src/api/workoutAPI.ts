@@ -26,7 +26,7 @@ export async function updateWorkout(
 	workoutId: number,
 	updatedWorkout: Workout
 ): Promise<Workout> {
-	const response = await fetch(`${BASE_URL}/updateWorkout/${workoutId}`, {
+	const response = await fetch(`${BASE_URL}/${workoutId}`, {
 		method: "PUT",
 		body: JSON.stringify(updatedWorkout),
 		headers: {

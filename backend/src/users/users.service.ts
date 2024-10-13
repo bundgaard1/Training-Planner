@@ -2,13 +2,6 @@ import { IUser } from "./users.interface";
 import UserModel from "./users.model";
 import bcrypt from "bcrypt";
 
-export async function createTestUser() {
-	const testUser = await UserModel.create();
-	console.log("Test user created");
-
-	return testUser as IUser;
-}
-
 export async function RegisterNewUser(username: string, password: string) {
 	// create hash and salt from from pass word and save in user
 	const saltRounds = 10;

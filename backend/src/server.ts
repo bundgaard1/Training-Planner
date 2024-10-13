@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import db from "./database";
-import { RegisterNewUser, createTestUser } from "./users/users.service";
+import { RegisterNewUser } from "./users/users.service";
 import router from "./routes";
 
 import "./models/associations.model";

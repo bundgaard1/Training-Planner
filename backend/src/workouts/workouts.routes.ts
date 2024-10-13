@@ -4,7 +4,7 @@ import { getWorkoutsByPlan, updateWorkout } from "./workouts.controller"; // Adj
 
 const router = express.Router();
 
+router.put("/:workoutId", authMiddleware, updateWorkout);
 router.get("/byPlan/:planId", authMiddleware, getWorkoutsByPlan);
-router.put("/updateWorkout/:workoutId", authMiddleware, updateWorkout);
 
 export default router;

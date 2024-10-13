@@ -7,9 +7,10 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"moduleResolution": "node",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"paths": {
-			"*": ["node_modules/*", "src/plans/interfaces/*"]
+			"*": ["node_modules/*", "src/plans/interfaces/*"],
+			"auth/*": ["src/auth/*"]
 		},
 		"forceConsistentCasingInFileNames": true
 	},

@@ -44,3 +44,19 @@ export async function createNewPlan(
 
 	return newPlan as IPlan;
 }
+
+export async function updatePlan(
+	id: number,
+	weeks: number,
+	name: string,
+	startDate: Date
+) {
+	const plan = await PlanModel.findByPk(id);
+	plan?.update({ weeks, name, startDate });
+	return plan;
+}
+
+export async function deletePlanById(id: number) {
+	const plan = await PlanModel.findByPk(id);
+	await plan?.destroy();
+}

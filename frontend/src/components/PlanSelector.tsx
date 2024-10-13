@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllPlans, getPlan } from "../api/planAPI";
 import { usePlan } from "../contexts/PlanContext";
-import PlanData from "../types/PlanData";
+import Plan from "../types/Plan";
 import Modal from "./Modal";
 import { planPeriod } from "../utils/planUtils";
 
@@ -11,7 +11,7 @@ interface PlanSelectorProps {
 
 export const PlanSelector = (props: PlanSelectorProps) => {
 	const { setPlan } = usePlan();
-	const [allPlans, setAllPlans] = useState<PlanData[]>([]);
+	const [allPlans, setAllPlans] = useState<Plan[]>([]);
 
 	useEffect(() => {
 		const fetchPlans = async () => {
@@ -24,7 +24,7 @@ export const PlanSelector = (props: PlanSelectorProps) => {
 
 	const changePlanToTheSelected = async (inputPlanId: number) => {
 		if (inputPlanId !== 0) {
-			const selectedPlan: PlanData = await getPlan(inputPlanId);
+			const selectedPlan: Plan = await getPlan(inputPlanId);
 			setPlan(selectedPlan);
 			props.setSelectPlan(false);
 		}

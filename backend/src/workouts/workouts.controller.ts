@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IWorkout } from "./workouts.interface";
-import { RequestWithUser } from "../auth/auth.interface";
+import { RequestWithUser } from "auth/auth.interface";
 import * as WorkoutService from "./workouts.service";
 
 export const getWorkoutsByPlan = async (
@@ -26,6 +26,7 @@ export const updateWorkout = async (req: RequestWithUser, res: Response) => {
 	}
 
 	const updatedWorkout = req.body;
+
 	try {
 		const updated = await WorkoutService.updateWorkout(
 			workoutId,

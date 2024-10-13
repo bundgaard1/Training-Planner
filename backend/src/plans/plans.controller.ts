@@ -43,3 +43,35 @@ export const createPlan = async (req: RequestWithUser, res: Response) => {
 
 	res.send(newPlan);
 };
+
+export const updatePlan = async (req: RequestWithUser, res: Response) => {
+	const { planId } = req.params;
+	const { weeks, name, startDate } = req.body;
+
+	if (!weeks && !name && !startDate) {
+		return res
+			.status(400)
+			.send({ error: "weeks, name, or startDate is required" });
+	}
+
+	const updatedPlan = await PlanService.updatePlan(
+		Number(planId),
+		weeks,
+		name,
+		startDate
+	);
+
+	res.send(updatedPlan);
+};
+
+export const deletePlan = async (req: RequestWithUser, res: Response) => {
+	const planId = req.params.planId;
+
+	if (!planId) {
+		return res.status(400).send({ error: "planId is required in query" });
+	}
+
+	const deletedPlan = await PlanService.deletePlanById(Number(planId));
+
+	res.send(deletedPlan);
+};

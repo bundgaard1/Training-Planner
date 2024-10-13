@@ -1,10 +1,10 @@
 import { DB_URL } from "../config";
-import PlanData from "../types/PlanData";
+import Plan from "../types/Plan";
 
-const BASE_URL = `${DB_URL}/plans`;
+const PLAN_BASE_URL = `${DB_URL}/plans`;
 
-export async function getPlan(planId: number): Promise<PlanData> {
-	const response = await fetch(`${BASE_URL}/getPlan/${planId}`, {
+export async function getPlan(planId: number): Promise<Plan> {
+	const response = await fetch(`${PLAN_BASE_URL}/${planId}`, {
 		method: "GET",
 		headers: {
 			authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -23,8 +23,8 @@ export async function getPlan(planId: number): Promise<PlanData> {
 	}
 }
 
-export async function createPlan(planData: PlanData): Promise<PlanData> {
-	const response = await fetch(`${BASE_URL}/createPlan`, {
+export async function createPlan(planData: Plan): Promise<Plan> {
+	const response = await fetch(`${PLAN_BASE_URL}`, {
 		method: "POST",
 		body: JSON.stringify(planData),
 		headers: {
@@ -47,8 +47,8 @@ export async function createPlan(planData: PlanData): Promise<PlanData> {
 	}
 }
 
-export async function getAllPlans(): Promise<PlanData[]> {
-	const response = await fetch(`${BASE_URL}/getPlans`, {
+export async function getAllPlans(): Promise<Plan[]> {
+	const response = await fetch(`${PLAN_BASE_URL}`, {
 		method: "GET",
 		headers: {
 			authorization: `Bearer ${localStorage.getItem("authToken")}`,

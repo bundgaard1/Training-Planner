@@ -7,12 +7,12 @@ import React, {
 	useMemo,
 } from "react";
 import { getWorkoutsByPlan } from "../api/workoutAPI";
-import PlanData from "../types/PlanData";
+import Plan from "../types/Plan";
 import Workout from "../types/Workout";
 
 interface PlanContextType {
-	plan: PlanData;
-	setPlan: React.Dispatch<React.SetStateAction<PlanData>>;
+	plan: Plan;
+	setPlan: React.Dispatch<React.SetStateAction<Plan>>;
 	workoutsByDay: Map<number, Workout>;
 	setWorkoutsByDay: React.Dispatch<React.SetStateAction<Map<number, Workout>>>;
 }
@@ -37,7 +37,7 @@ interface PlanProviderProps {
 
 // Create a provider component
 export const PlanProvider: React.FC<PlanProviderProps> = ({ children }) => {
-	const [plan, setPlan] = useState<PlanData>(defaultContextValue.plan);
+	const [plan, setPlan] = useState<Plan>(defaultContextValue.plan);
 	const [workoutsByDay, setWorkoutsByDay] = useState<Map<number, Workout>>(
 		defaultContextValue.workoutsByDay
 	);

@@ -1,25 +1,17 @@
 import React, { Children, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPlan } from "../../api/planAPI";
-import PlanData from "../../types/PlanData";
+import Plan from "types/Plan";
+import { calculateEndDate } from "../../utils/planUtils";
 
 export function CreateNewPlan() {
-	const [form, setForm] = useState<PlanData>({
+	const [form, setForm] = useState<Plan>({
 		weeks: 0,
 		name: "",
 		startDate: "",
 	});
-	const [text, setText] = useState("");
+	const [alertText, setAlertText] = useState("");
 	const navigate = useNavigate();
-
-	const calculateEndDate = () => {
-		if (!form.startDate || form.weeks <= 0) return "-";
-		const endDate = new Date(form.startDate);
-		endDate.setDate(endDate.getDate() + form.weeks * 7);
-		return `${endDate.getDate()}/${
-			endDate.getMonth() + 1
-		}/${endDate.getFullYear()}`;
-	};
 
 	const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setForm({
@@ -30,30 +22,30 @@ export function CreateNewPlan() {
 
 	const onSubmit = () => {
 		if (!form.name || !form.weeks || !form.startDate) {
-			setText("Please fill in all fields");
+			setAlertText("Please fill in all fields");
 			return;
 		}
 		if (form.weeks < 1 || form.weeks > 32) {
-			setText("Weeks must be between 1 and 32");
+			setAlertText("Weeks must be between 1 and 32");
 			return;
 		}
 
 		const startDay = new Date(form.startDate).getDay();
 		if (startDay !== 1) {
-			setText("Start date must be a Monday");
+			setAlertText("Start date must be a Monday");
 			return;
 		}
 
 		createPlan(form).then(data => {
 			console.log(data);
-			setText("Plan created successfully");
+			setAlertText("Plan created successfully");
 			navigate("/plans");
 		});
 	};
 
 	return (
-		<div className="form flex flex-col p-8">
-			<h1 className="text-xl font-bold mb-4 text-center">Create Plan</h1>
+		<div className="form flex flex-col p-8 h-full justify-center items-center">
+			<h1 className="text-xl font-bold mb-4 text-center">Create a new Plan</h1>
 			<div className="form-group mb-4">
 				<label className="block text-gray-700">Name:</label>
 				<input
@@ -65,7 +57,12 @@ export function CreateNewPlan() {
 			</div>
 			<div className="form-group mb-4">
 				<label className="block text-gray-700">Weeks:</label>
-				<input onChange={onChange} type="number" name="weeks" />
+				<input
+					className="form-input mt-1 block w-full "
+					onChange={onChange}
+					type="number"
+					name="weeks"
+				/>
 			</div>
 			<div className="form-group mb-4">
 				<label className="block text-gray-700">Starting Date:</label>
@@ -78,7 +75,7 @@ export function CreateNewPlan() {
 			</div>
 			<div className="form-group mb-4">
 				<label className="text-gray-700">Ending Date: </label>
-				<span>{calculateEndDate()}</span>
+				<span>{calculateEndDate(form.startDate, form.weeks)}</span>
 			</div>
 			<button
 				onClick={onSubmit}
@@ -87,7 +84,7 @@ export function CreateNewPlan() {
 			>
 				Create Plan
 			</button>
-			<p>{text}</p>
+			<p>{alertText}</p>
 		</div>
 	);
 }
