@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { calculateEndDate } from "../../utils/planUtils";
-import PremadePlan, { ExamplePremadePlans } from "../../types/PremadePlan";
+import PremadePlan from "../../types/PremadePlan";
+import { getPremadePlans } from "../../api/PremadePlanAPI";
+
+import { createPlanBasedOnPremade } from "../../api/PremadePlanAPI";
 
 const PlanBox = (plan: PremadePlan) => {
 	const [selected, setSelected] = useState(false);
@@ -10,10 +13,25 @@ const PlanBox = (plan: PremadePlan) => {
 			startDate: "",
 		});
 
+		const [alertText, setAlertText] = useState("");
+
 		const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 			setForm({
 				...form,
 				[e.target.name]: e.target.value,
+			});
+		};
+
+		const onSubmit = () => {
+			const startDay = new Date(form.startDate).getDay();
+			if (startDay !== 1) {
+				setAlertText("Start date must be a Monday");
+				return;
+			}
+
+			createPlanBasedOnPremade(plan.id, form.startDate).then(data => {
+				console.log(data);
+				setAlertText("Plan created successfully");
 			});
 		};
 
@@ -34,7 +52,13 @@ const PlanBox = (plan: PremadePlan) => {
 					<span>{calculateEndDate(form.startDate, plan.weeks)}</span>
 				</div>
 
-				<button className="ml-auto bg-green-500 rounded px-3">Create</button>
+				<button
+					className="ml-auto bg-green-500 rounded px-3"
+					onClick={onSubmit}
+				>
+					Create
+				</button>
+				<div>{alertText}</div>
 			</div>
 		);
 	}
@@ -67,7 +91,11 @@ const PlanBox = (plan: PremadePlan) => {
 };
 
 export function FindAPlan() {
-	const [plans, setPlans] = useState<PremadePlan[]>(ExamplePremadePlans);
+	const [plans, setPlans] = useState<PremadePlan[]>([]);
+
+	useEffect(() => {
+		getPremadePlans().then(plans => setPlans(plans));
+	}, []);
 
 	const PlanList = () => {
 		return (

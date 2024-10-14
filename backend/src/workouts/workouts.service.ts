@@ -2,8 +2,10 @@ import WorkoutModel from "./workouts.model";
 import { IWorkout } from "./workouts.interface";
 import { error } from "console";
 
-export async function getAllWorkoutsByPlan(planId: any) {
-	const workouts = await WorkoutModel.findAll({ where: { planId } });
+export async function getWorkoutsByPlan(planId: any) {
+	const workouts = await WorkoutModel.findAll({
+		where: { planId },
+	});
 	return workouts as IWorkout[];
 }
 

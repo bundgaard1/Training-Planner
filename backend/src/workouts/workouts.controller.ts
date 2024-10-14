@@ -13,7 +13,7 @@ export const getWorkoutsByPlan = async (
 		return res.status(400).send({ error: "planId is required in query" });
 	}
 
-	const workouts = await WorkoutService.getAllWorkoutsByPlan(planId);
+	const workouts = await WorkoutService.getWorkoutsByPlan(planId);
 
 	res.send(workouts);
 };

@@ -8,4 +8,5 @@ export interface IWorkout {
 	isCompleted: boolean;
 	day: number;
 	planId: number;
+	premadeId: number;
 }

@@ -23,6 +23,7 @@ class WorkoutModel
 	public isCompleted!: boolean;
 	public day!: number;
 	public planId!: number;
+	public premadeId!: number;
 }
 
 WorkoutModel.init(
@@ -62,10 +63,11 @@ WorkoutModel.init(
 		day: DataTypes.INTEGER,
 		planId: {
 			type: DataTypes.INTEGER,
-			references: {
-				model: PlanModel,
-				key: "id",
-			},
+			allowNull: true,
+		},
+		premadeId: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
 		},
 	},
 	{

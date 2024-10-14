@@ -39,7 +39,6 @@ export function CreateNewPlan() {
 		createPlan(form).then(data => {
 			console.log(data);
 			setAlertText("Plan created successfully");
-			navigate("/plans");
 		});
 	};
 

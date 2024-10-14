@@ -6,6 +6,7 @@ dotenv.config();
 
 import db from "./database";
 import { RegisterNewUser } from "./users/users.service";
+import { createPremadePremadePlans } from "./premadePlans/premadePlans.service";
 import router from "./routes";
 
 import "./models/associations.model";
@@ -26,6 +27,7 @@ const startServer = async () => {
 	try {
 		await db.sync();
 		await RegisterNewUser("test", "test");
+		await createPremadePremadePlans();
 		app.listen(port, () => {
 			console.log(`Server running at http://localhost:${port}`);
 		});
